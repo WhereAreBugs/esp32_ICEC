@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/temprature.cpp)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/temprature.cpp src/location.cpp src/DS1307.cpp include/DS1307_time.h include/Status.h include/Status.h include/temprature.h)

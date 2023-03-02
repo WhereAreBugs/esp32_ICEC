@@ -1,20 +1,20 @@
-#include "temprature.h"
+#include "temperature.h"
+#include "settings.h"
+
 #ifndef ESP32
 #pragma message(THIS EXAMPLE IS FOR ESP32 ONLY!)
 #error Select ESP32 board.
 #endif
 
 
-void temprature::setup(int pin) {
-    const int * p = &dhtPin;
-    * const_cast<int * >(p) = pin;
+void temperature::setup() {
     /* 覆写DHT的pin */
-    dht.setup(dhtPin, DHTesp::DHT11);
+    dht.setup(DHTPIN, DHTesp::DHT11);
     Serial.println("DHT: init done");
 }
 
 
-bool temprature::loop() {
+bool temperature::loop() {
    //耗时 250 milliseconds
    //警告: 数据高延迟！
    newValues = dht.getTempAndHumidity();
@@ -27,15 +27,15 @@ bool temprature::loop() {
 }
 
 //以下为类的访问接口(Interface)
-float temprature::getTemp() const {
+float temperature::getTemp() const {
     return newValues.temperature;
 }
 
-float temprature::getHum() const {
+float temperature::getHum() const {
     return newValues.humidity;
 }
 
-ComfortState temprature::getComfortState() {
+ComfortState temperature::getComfortState() {
     return cf;
 }
 

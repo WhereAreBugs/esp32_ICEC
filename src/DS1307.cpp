@@ -4,7 +4,7 @@
 #include <Wire.h>
 #include <Arduino.h>
 #include "DS1307_time.h"
-#define DS1307_ADDRESS 0x68
+#include "settings.h"
 
 void DS1307::setup() {
     if (! rtc.begin()) {

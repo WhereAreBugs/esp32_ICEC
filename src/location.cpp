@@ -2,8 +2,7 @@
 // Created by 神奇bug在哪里 on 2023/2/28.
 //
 #include <Arduino.h>
-#define trigPin  12 //定义Trig引脚
-#define echoPin  13 //定义Echo引脚
+#include <settings.h>
 
 void setup_location() {
   // 设置引脚模式

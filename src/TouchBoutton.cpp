@@ -3,3 +3,7 @@
 //
 
 #include "TouchBoutton.h"
+
+void TouchBoutton::setup() {
+
+}

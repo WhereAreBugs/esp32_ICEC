@@ -8,12 +8,16 @@
 #include <U8g2lib.h>
 #include <MUIU8g2.h>
 #include <Wire.h>
-enum pages {main,timeSet,alarmSet,onAlarm,pwmAnalytic,};
-U8G2_SSD1309_128X64_NONAME0_2_SW_I2C u8g2(U8G2_R0, SCL, SDA);
+#include "temperature.h"
+#include "DS1307_time.h"
+enum pages {mainMenu,timeSet,alarmSet,onAlarm,pwmAnalytic,getDistance,aboutGroup};
+
 class displayCore {
 private:
-    byte page = 0;
-    U8G2_SSD1309_128X64_NONAME0_2_SW_I2C * display = &u8g2;
+    pages page = mainMenu;
+    U8G2_SSD1309_128X64_NONAME0_2_SW_I2C * display = nullptr;
+    temperature * temp = nullptr;
+    DS1307 * ds = nullptr;
 
 public:
     void setup();

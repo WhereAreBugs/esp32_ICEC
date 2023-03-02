@@ -1,29 +1,32 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <U8g2lib.h>
-#include <U8x8lib.h>
-#include <MUIU8g2.h>
+#include "serial_IO.h"
+volatile bool SYSisOff = true;
 
 
-
-U8G2_SSD1309_128X64_NONAME0_2_SW_I2C u8g2(U8G2_R0, SCL, SDA);
 //实例化全局显示对象
-
+serial_IO serialIo;
 void setup() {
 // write your initialization code here
     Wire.begin(21,22);
-    Serial.begin(115200);
+    serialIo.setup();
+    /*   SYS指示灯引脚初始化   */
+    pinMode(2,OUTPUT);
     Serial.println("ESP32 setup() ended");
 
 }
 
 void loop() {
-    volatile bool SYSisOff = true;
-    /*SYS循环指示灯*/
+    /*   SYS循环指示灯开始   */
     if (SYSisOff)
         digitalWrite(2,HIGH);
     else
         digitalWrite(2,LOW);
-    delay(1000);
+    SYSisOff = !SYSisOff;
+    delay(200);
+    serialIo.loop();
+
+    /*   SYS循环指示灯结束   */
+
 
 }

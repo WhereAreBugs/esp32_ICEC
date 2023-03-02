@@ -1,28 +1,38 @@
 //
 // Created by 神奇bug在哪里 on 2023/2/28.
 //
-#include <Arduino.h>
 
 #ifndef ESP32_ICEC_TIME_H
 #define ESP32_ICEC_TIME_H
-struct DS1307_time{
-    byte second;
-    byte minute;
-    byte hour;
-    byte dayOfWeek;
-    byte dayOfMonth;
-    byte month;
+
+#include <Arduino.h>
+#include <RTClib.h>
+struct setTime_{
     byte year;
+    byte month;
+    byte day;
+    byte hour;
+    byte minute;
+    byte second;
+};
+enum DS1307_status{
+    DS1307_OK,
+    DS1307_ERROR_CONNECT,
+    DS1307_ERROR_RESET,
 };
 class DS1307{
 private:
-    struct DS1307_time currentTime;
+    DateTime now;
+    RTC_DS1307 rtc;
+    const char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    DS1307_status Status = DS1307_ERROR_CONNECT;
     static byte bcdToDec(int read);
 public:
-    void RTCsetup();
+    void setup();
     void readTime();
-    DS1307_time getTime();
-    bool setTime(DS1307_time time);
+    DateTime getTime();
+    bool setTime(DateTime time);
+    DS1307_status getStatus();
 
 };
 #endif //ESP32_ICEC_TIME_H

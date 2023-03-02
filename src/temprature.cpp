@@ -14,7 +14,7 @@ void temprature::setup(int pin) {
 }
 
 
-bool temprature::update() {
+bool temprature::loop() {
    //耗时 250 milliseconds
    //警告: 数据高延迟！
    newValues = dht.getTempAndHumidity();

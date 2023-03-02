@@ -9,7 +9,7 @@ class temprature{
 
 public:
     void setup(int pin);
-    bool update();
+    bool loop();
     float getTemp() const;
     float getHum() const;
     ComfortState getComfortState();

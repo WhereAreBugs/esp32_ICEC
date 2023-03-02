@@ -6,38 +6,42 @@
 #include "DS1307_time.h"
 #define DS1307_ADDRESS 0x68
 
-void DS1307::RTCsetup() {
-    Wire.begin();
-    Wire.beginTransmission(DS1307_ADDRESS);
-    Wire.write(0x00);
-    Wire.write(0x00);
-    Wire.endTransmission();
+void DS1307::setup() {
+    if (! rtc.begin()) {
+        Serial.println("Couldn't find RTC");
+        Serial.flush();
+    }
+    if (! rtc.isrunning()) {
+        Serial.println("RTC is NOT running, let's set the time!");
+        Status = DS1307_ERROR_RESET;
+        // January 21, 2014 at 3am you would call:
+        // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+    } else
+        Status = DS1307_OK;
+
 }
 void DS1307::readTime(){
     //Read the current time
-    Wire.beginTransmission(DS1307_ADDRESS);
-    Wire.write(0x00);
-    Wire.endTransmission();
-    Wire.requestFrom(DS1307_ADDRESS, 7);
-    byte second = bcdToDec(Wire.read() & 0x7f);
-    byte minute = bcdToDec(Wire.read());
-    byte hour = bcdToDec(Wire.read() & 0x3f);
-    byte dayOfWeek = bcdToDec(Wire.read());
-    byte dayOfMonth = bcdToDec(Wire.read());
-    byte month = bcdToDec(Wire.read());
-    byte year = bcdToDec(Wire.read());
-    currentTime = {second,minute,hour,dayOfWeek,dayOfMonth,month,year};
+   now = rtc.now();
+   if(!now.isValid())
+   {
+       Serial.println("RTC lost confidence in the DateTime!");
+   }
 }
 
 byte DS1307::bcdToDec(int read) {
     return ((read / 16 * 10) + (read % 16));
 }
 
-DS1307_time DS1307::getTime() {
-    return currentTime;
+DateTime DS1307::getTime() {
+    return now;
 }
 
-bool DS1307::setTime(DS1307_time time) {
-    Wire.beginTransmission(DS1307_ADDRESS);
+bool DS1307::setTime(DateTime time) {
 
+
+}
+
+DS1307_status DS1307::getStatus() {
+    return Status;
 }

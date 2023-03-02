@@ -6,6 +6,7 @@
 #include "settings.h"
 #include "Status.h"
 #include "DS1307_time.h"
+#include "TouchButton.h"
 
 volatile bool SYSisOff = true;
 
@@ -14,6 +15,7 @@ serial_IO serialIo;
 temperature temperature;
 displayCore displayCore;
 SYSManeger sysManeger;
+TouchButton touches;
 DS1307 ds;
 
 void setup() {

@@ -8,11 +8,11 @@ union SYSStatus{
     byte alarmEN : 1;
     byte currentPage : 3; //max:3
     /* 0:主界面，温度
-     * 1:时间设置
-     * 2:PWM
-     * 3:闹钟
-     * 4:距离
-     * 5:关于页面
+     * 1:PWM
+     * 2:闹钟设置
+     * 3:距离
+     * 4:关于页面
+     * 5:时间设置
      * 6:未定义
      * 7:未定义
      * */
@@ -42,6 +42,7 @@ public:
     void setup();
     void loop();
     SYSStatus get_Status();
+    void set_Status(uint8_t status);
 };
 
 

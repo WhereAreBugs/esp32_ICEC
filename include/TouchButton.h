@@ -7,16 +7,19 @@
 #include "Arduino.h"
 #include "OneButton.h"
 #include "settings.h"
+#include "Status.h"
+#include "DS1307_time.h"
+DateTime timeSet{};
 class TouchButton {
 private:
     OneButton * button1 = new OneButton(BUTTON1, true);
     OneButton * button2 = new OneButton(BUTTON2, true);
     OneButton * button3 = new OneButton(BUTTON3, true);
     OneButton * button4 = new OneButton(BUTTON4, true);
-
 public:
     void setup();
-    virtual void loop() = 0; //disable loop
+
+    DateTime getTimeSet();
 };
 void button_handle1();
 void button_handle2();

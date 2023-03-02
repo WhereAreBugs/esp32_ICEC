@@ -16,3 +16,8 @@ SYSStatus SYSManeger::get_Status() {
     return status;
 }
 
+void SYSManeger::set_Status(uint8_t status) {
+    this->status.summary = status;
+
+}
+

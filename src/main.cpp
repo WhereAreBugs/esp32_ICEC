@@ -14,8 +14,8 @@ serial_IO serialIo;
 temperature temperature;
 displayCore displayCore;
 SYSManeger sysManeger;
-
 DS1307 ds;
+
 void setup() {
     Wire.begin(SDA_PIN,SCL_PIN);
     serialIo.setup();
@@ -42,8 +42,7 @@ void loop() {
     displayCore.loop();
     /*   SYS循环指示灯结束   */
     sysManeger.loop();
-//    temperature.loop();
-//    Serial.println(temperature.getTemp());
+    temperature.loop();
     ds.readTime();
     Serial.println(ds.getTime().second());
 

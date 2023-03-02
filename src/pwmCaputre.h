@@ -7,7 +7,7 @@
 
 
 class pwmCaputre {
-
+    void setup();
 };
 
 

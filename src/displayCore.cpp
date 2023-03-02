@@ -13,7 +13,9 @@ void displayCore::setup() {
     display->clearDisplay();
     display->setCursor(0,8 );
     display->setFont(u8g2_font_unifont_t_chinese3);
-    display->print("一二三Booting");
+    display->print("系统正在启动\n");
+    display->setCursor(0,16);
+    display->println("稍安勿躁...");
     display->sendBuffer();
 }
 

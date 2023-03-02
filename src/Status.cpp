@@ -11,3 +11,8 @@ void SYSManeger::loop() {
 
 }
 
+SYSStatus SYSManeger::get_Status() {
+
+    return status;
+}
+

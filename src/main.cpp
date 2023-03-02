@@ -27,7 +27,6 @@ void setup() {
     temperature.setup();
     ds.setup();
 
-
 }
 
 void loop() {
@@ -44,7 +43,7 @@ void loop() {
     sysManeger.loop();
     temperature.loop();
     ds.readTime();
-    Serial.println(ds.getTime().second());
+
 
 
 }

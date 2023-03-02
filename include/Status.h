@@ -27,7 +27,7 @@ union SYSStatus{
      * 6:设置秒
      * 7:未定义
      * */
-    uint64_t summary = 0;
+    uint8_t summary = 0;
 };
 class SYSManeger{
     /*
@@ -41,6 +41,7 @@ private:
 public:
     void setup();
     void loop();
+    SYSStatus get_Status();
 };
 
 

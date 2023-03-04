@@ -11,8 +11,8 @@
 #define trigPin  25
 #define echoPin  26
 #define DS1307_ADDRESS 0x68
-#define BUTTON1 36
-#define BUTTON2 39
+#define BUTTON1 18
+#define BUTTON2 19
 #define BUTTON3 14
 #define BUTTON4 13
 #define LED_OUTPUT 23

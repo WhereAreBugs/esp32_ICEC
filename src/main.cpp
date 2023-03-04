@@ -27,6 +27,7 @@ void setup() {
     displayCore.setup();
     displayCore.SetPage(mainMenu);
     temperature.setup();
+    touches.setup();
     ds.setup();
 
 }

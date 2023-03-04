@@ -1,3 +1,8 @@
 .pio
 CMakeListsPrivate.txt
 cmake-build-*/ 
+.vscode/settings.json
+.gitignore
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/c_cpp_properties.json

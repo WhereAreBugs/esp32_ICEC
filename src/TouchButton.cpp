@@ -3,10 +3,15 @@
 //
 
 #include "TouchButton.h"
+const short daysOfMounth[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+TimeSet timeSet;
+bool alarmEn = 0;
 extern SYSManeger sysManeger;
+extern DS1307 ds;
 void TouchButton::setup() {
     button1->attachClick(button_handle1);
-    button1->attachDuringLongPress(button_handle1_long_press);
+    button1->attachLongPressStop(button_handle1_long_press);
+    button1->attachDoubleClick(button_handle1_double_click);
     button2->attachClick(button_handle2);
     button2->attachDuringLongPress(button_handle2_long_press);
     button3->attachClick(button_handle3);
@@ -16,7 +21,12 @@ void TouchButton::setup() {
     Serial.println("TouchButton setup complete");
 }
 
-DateTime TouchButton::getTimeSet() {
+bool TouchButton::getAlarmEn()
+{
+    return alarmEn;
+}
+
+TimeSet TouchButton::getTimeSet() {
     return timeSet;
 }
 
@@ -49,13 +59,593 @@ void button_handle2() {
     uint8_t result = sysManeger.get_Status().summary;
     if ((result&0x0e)==0x04||(result&0x0e)==0x0a) {
         //处在调整时间的界面
-        if (result&0xe0==){
-
+        if ((result&0xe0)==0x00){
+            //当前未处于时间设置状态
+            return;
         }
-
+        else if ((result&0x0e)==0x20){
+            //设置年
+                if (timeSet.year>=2099)
+                {
+                    timeSet.year = 2000;
+                    return;
+                }
+                timeSet.year++;
+            }
+        else if ((result&0x0e)==0x40)
+        {
+            //设置月
+            if (timeSet.month>=12)
+            {
+                timeSet.month=1;
+                return;
+            }
+                timeSet.month++;
+            }
+        else if ((result&0x0e)==0x60)
+        {
+            //设置日
+            if (timeSet.day >=daysOfMounth[timeSet.month-1]&&timeSet.month!=2)
+            {
+                timeSet.day = 1;
+                return;
+            }
+            else if (timeSet.month==2&&is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=29)
+                {
+                    timeSet.day=1;
+                    return;
+                }
+            }
+            else if (timeSet.month==2&&!is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=28)
+                {
+                    timeSet.day = 1;
+                    return;
+                }
+            }
+            timeSet.day++;
+        }
+        else if ((result&0x0e)==0x80)
+        {
+            //设置时
+            if(timeSet.hour>=23)
+            {
+                timeSet.hour = 0;
+                return;
+            }
+            timeSet.hour++;
+        }
+        else if ((result&0x0e)==0xa0)
+        {
+            //设置分
+            if(timeSet.minute >= 59)
+            {
+                timeSet.minute = 0;
+                return;
+            }
+            timeSet.minute++;
+        }
+        else if ((result&0x0e)==0xc0)
+        {
+            //设置秒
+            if(timeSet.second>=59)
+            {
+                timeSet.second = 0;
+                return;
+            }
+            timeSet.second++;
+        }
     }
 
 
 
 }
 
+void button_handle1_long_press()
+/*
+ * Fn: "长按保存时间"
+ * Fixed: False[该按键的功能将会随着页面的变化而变化]
+ * WARNING: 该按键在某些页面下不会生效
+ */
+{
+    uint8_t result = sysManeger.get_Status().summary;
+    if ((result&0x0e)==0x0a)
+    //处在调整时间的界面
+    {
+        ds.setTime(DateTime(timeSet.year,timeSet.month,timeSet.day,
+                            timeSet.hour,timeSet.minute,timeSet.second));
+        result=result&0x11;
+    }
+    else if ((result&0x0e)==0x04)
+    //处在调整闹钟的界面
+    {
+        
+    }
+}
+
+void button_handle2_long_press()
+/*
+ * Fn: "一直+1s步进"
+ * Fixed: False[该按键的功能将会随着页面的变化而变化]
+ * WARNING: 该按键在某些页面下不会生效
+ */
+{
+    uint8_t result = sysManeger.get_Status().summary;
+    if ((result&0x0e)==0x04||(result&0x0e)==0x0a) {
+        //处在调整时间的界面
+        if ((result&0xe0)==0x00){
+            //当前未处于时间设置状态
+            return;
+        }
+        else if ((result&0x0e)==0x20){
+            //设置年
+                if (timeSet.year>=2099)
+                {
+                    timeSet.year = 2000;
+                    return;
+                }
+                timeSet.year++;
+            }
+        else if ((result&0x0e)==0x40)
+        {
+            //设置月
+            if (timeSet.month>=12)
+            {
+                timeSet.month=1;
+                return;
+            }
+                timeSet.month++;
+            }
+        else if ((result&0x0e)==0x60)
+        {
+            //设置日
+            if (timeSet.day >=daysOfMounth[timeSet.month-1]&&timeSet.month!=2)
+            {
+                timeSet.day = 1;
+                return;
+            }
+            else if (timeSet.month==2&&is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=29)
+                {
+                    timeSet.day=1;
+                    return;
+                }
+            }
+            else if (timeSet.month==2&&!is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=28)
+                {
+                    timeSet.day = 1;
+                    return;
+                }
+            }
+            timeSet.day++;
+        }
+        else if ((result&0x0e)==0x80)
+        {
+            //设置时
+            if(timeSet.hour>=23)
+            {
+                timeSet.hour = 0;
+                return;
+            }
+            timeSet.hour++;
+        }
+        else if ((result&0x0e)==0xa0)
+        {
+            //设置分
+            if(timeSet.minute >= 59)
+            {
+                timeSet.minute = 0;
+                return;
+            }
+            timeSet.minute++;
+        }
+        else if ((result&0x0e)==0xc0)
+        {
+            //设置秒
+            if(timeSet.second>=59)
+            {
+                timeSet.second = 0;
+                return;
+            }
+            timeSet.second++;
+        }
+    }
+    delay(100);
+}
+void button_handle3() {
+    /*
+     * Fn: "+2s步进"
+     * Fixed: False[该按键的功能将会随着页面的变化而变化]
+     * WARNING: 该按键在某些页面下不会生效
+     */
+    uint8_t result = sysManeger.get_Status().summary;
+    if ((result&0x0e)==0x04||(result&0x0e)==0x0a) {
+        //处在调整时间的界面
+        if ((result&0xe0)==0x00){
+            //当前未处于时间设置状态
+            return;
+        }
+        else if ((result&0x0e)==0x20){
+            //设置年
+                if (timeSet.year>=2098)
+                {
+                    timeSet.year = 2000;
+                    return;
+                }
+                timeSet.year+=2;
+            }
+        else if ((result&0x0e)==0x40)
+        {
+            //设置月
+            if (timeSet.month>=11)
+            {
+                timeSet.month=1;
+                return;
+            }
+                timeSet.month+=2;
+            }
+        else if ((result&0x0e)==0x60)
+        {
+            //设置日
+            if (timeSet.day >=daysOfMounth[timeSet.month-1]&&timeSet.month!=2)
+            {
+                timeSet.day = 1;
+                return;
+            }
+            else if (timeSet.month==2&&is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=28)
+                {
+                    timeSet.day=1;
+                    return;
+                }
+            }
+            else if (timeSet.month==2&&!is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=27)
+                {
+                    timeSet.day = 1;
+                    return;
+                }
+            }
+            timeSet.day+=2;
+        }
+        else if ((result&0x0e)==0x80)
+        {
+            //设置时
+            if(timeSet.hour>=22)
+            {
+                timeSet.hour = 0;
+                return;
+            }
+            timeSet.hour+=2;
+        }
+        else if ((result&0x0e)==0xa0)
+        {
+            //设置分
+            if(timeSet.minute >= 58)
+            {
+                timeSet.minute = 0;
+                return;
+            }
+            timeSet.minute+=2;
+        }
+        else if ((result&0x0e)==0xc0)
+        {
+            //设置秒
+            if(timeSet.second>=58)
+            {
+                timeSet.second = 0;
+                return;
+            }
+            timeSet.second+=2;
+        }
+    }
+
+
+
+}
+
+void button_handle3_long_press()
+   /*
+     * Fn: "一直+2s步进"
+     * Fixed: False[该按键的功能将会随着页面的变化而变化]
+     * WARNING: 该按键在某些页面下不会生效
+     */
+{
+    uint8_t result = sysManeger.get_Status().summary;
+    if ((result&0x0e)==0x04||(result&0x0e)==0x0a) {
+        //处在调整时间的界面
+        if ((result&0xe0)==0x00){
+            //当前未处于时间设置状态
+            return;
+        }
+        else if ((result&0x0e)==0x20){
+            //设置年
+                if (timeSet.year>=2098)
+                {
+                    timeSet.year = 2000;
+                    return;
+                }
+                timeSet.year+=2;
+            }
+        else if ((result&0x0e)==0x40)
+        {
+            //设置月
+            if (timeSet.month>=11)
+            {
+                timeSet.month=1;
+                return;
+            }
+                timeSet.month+=2;
+            }
+        else if ((result&0x0e)==0x60)
+        {
+            //设置日
+            if (timeSet.day >=daysOfMounth[timeSet.month-1]&&timeSet.month!=2)
+            {
+                timeSet.day = 1;
+                return;
+            }
+            else if (timeSet.month==2&&is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=28)
+                {
+                    timeSet.day=1;
+                    return;
+                }
+            }
+            else if (timeSet.month==2&&!is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=27)
+                {
+                    timeSet.day = 1;
+                    return;
+                }
+            }
+            timeSet.day+=2;
+        }
+        else if ((result&0x0e)==0x80)
+        {
+            //设置时
+            if(timeSet.hour>=22)
+            {
+                timeSet.hour = 0;
+                return;
+            }
+            timeSet.hour+=2;
+        }
+        else if ((result&0x0e)==0xa0)
+        {
+            //设置分
+            if(timeSet.minute >= 58)
+            {
+                timeSet.minute = 0;
+                return;
+            }
+            timeSet.minute+=2;
+        }
+        else if ((result&0x0e)==0xc0)
+        {
+            //设置秒
+            if(timeSet.second>=58)
+            {
+                timeSet.second = 0;
+                return;
+            }
+            timeSet.second+=2;
+        }
+    }
+    delay(100);
+}
+
+void button_handle4() {
+    /*
+     * Fn: "+5s步进"
+     * Fixed: False[该按键的功能将会随着页面的变化而变化]
+     * WARNING: 该按键在某些页面下不会生效
+     */
+    uint8_t result = sysManeger.get_Status().summary;
+    if ((result&0x0e)==0x04||(result&0x0e)==0x0a) {
+        //处在调整时间的界面
+        if ((result&0xe0)==0x00){
+            //当前未处于时间设置状态
+            return;
+        }
+        else if ((result&0x0e)==0x20){
+            //设置年
+                if (timeSet.year>=2095)
+                {
+                    timeSet.year = 2000;
+                    return;
+                }
+                timeSet.year+=5;
+            }
+        else if ((result&0x0e)==0x40)
+        {
+            //设置月
+            if (timeSet.month>=8)
+            {
+                timeSet.month=1;
+                return;
+            }
+                timeSet.month+=5;
+            }
+        else if ((result&0x0e)==0x60)
+        {
+            //设置日
+            if (timeSet.day >=daysOfMounth[timeSet.month-1]-5&&timeSet.month!=2)
+            {
+                timeSet.day = 1;
+                return;
+            }
+            else if (timeSet.month==2&&is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=24)
+                {
+                    timeSet.day=1;
+                    return;
+                }
+            }
+            else if (timeSet.month==2&&!is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=23)
+                {
+                    timeSet.day = 1;
+                    return;
+                }
+            }
+            timeSet.day+=5;
+        }
+        else if ((result&0x0e)==0x80)
+        {
+            //设置时
+            if(timeSet.hour>=19)
+            {
+                timeSet.hour = 0;
+                return;
+            }
+            timeSet.hour+=5;
+        }
+        else if ((result&0x0e)==0xa0)
+        {
+            //设置分
+            if(timeSet.minute >= 55)
+            {
+                timeSet.minute = 0;
+                return;
+            }
+            timeSet.minute+=5;
+        }
+        else if ((result&0x0e)==0xc0)
+        {
+            //设置秒
+            if(timeSet.second>=55)
+            {
+                timeSet.second = 0;
+                return;
+            }
+            timeSet.second+=5;
+        }
+    }
+
+
+
+}
+
+void button_handle4_long_press()
+   /*
+     * Fn: "一直+5s步进"
+     * Fixed: False[该按键的功能将会随着页面的变化而变化]
+     * WARNING: 该按键在某些页面下不会生效
+     */
+{
+    uint8_t result = sysManeger.get_Status().summary;
+    if ((result&0x0e)==0x04||(result&0x0e)==0x0a) {
+        //处在调整时间的界面
+        if ((result&0xe0)==0x00){
+            //当前未处于时间设置状态
+            return;
+        }
+        else if ((result&0x0e)==0x20){
+            //设置年
+                if (timeSet.year>=2095)
+                {
+                    timeSet.year = 2000;
+                    return;
+                }
+                timeSet.year+=5;
+            }
+        else if ((result&0x0e)==0x40)
+        {
+            //设置月
+            if (timeSet.month>=8)
+            {
+                timeSet.month=1;
+                return;
+            }
+                timeSet.month+=5;
+            }
+        else if ((result&0x0e)==0x60)
+        {
+            //设置日
+            if (timeSet.day >=daysOfMounth[timeSet.month-1]-5&&timeSet.month!=2)
+            {
+                timeSet.day = 1;
+                return;
+            }
+            else if (timeSet.month==2&&is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=25)
+                {
+                    timeSet.day=1;
+                    return;
+                }
+            }
+            else if (timeSet.month==2&&!is_runnina(timeSet.year))
+            {
+                if (timeSet.day>=24)
+                {
+                    timeSet.day = 1;
+                    return;
+                }
+            }
+            timeSet.day+=5;
+        }
+        else if ((result&0x0e)==0x80)
+        {
+            //设置时
+            if(timeSet.hour>=18)
+            {
+                timeSet.hour = 0;
+                return;
+            }
+            timeSet.hour+=5;
+        }
+        else if ((result&0x0e)==0xa0)
+        {
+            //设置分
+            if(timeSet.minute >= 55)
+            {
+                timeSet.minute = 0;
+                return;
+            }
+            timeSet.minute+=5;
+        }
+        else if ((result&0x0e)==0xc0)
+        {
+            //设置秒
+            if(timeSet.second>=55)
+            {
+                timeSet.second = 0;
+                return;
+            }
+            timeSet.second+=5;
+        }
+    }
+    delay(100);
+}
+
+void button_handle1_double_click()
+   /*
+     * Fn: "开关闹钟功能"
+     * Fixed: False[该按键的功能将会随着页面的变化而变化]
+     * WARNING: 该按键在某些页面下不会生效
+     */
+
+{
+    uint8_t result = sysManeger.get_Status().summary;
+    if((result&0x0e)==0x04)
+    //处在闹钟设置的界面
+    {
+        alarmEn = !alarmEn;
+        return;
+    }
+    
+}

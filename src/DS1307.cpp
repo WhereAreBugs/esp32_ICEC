@@ -38,7 +38,8 @@ DateTime DS1307::getTime() {
 }
 
 bool DS1307::setTime(DateTime time) {
-
+    rtc.adjust(time);
+    return true;
 
 }
 

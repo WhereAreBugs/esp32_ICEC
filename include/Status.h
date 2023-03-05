@@ -13,7 +13,9 @@ union SYSStatus{
      * 3:距离
      * 4:关于页面
      * 5:时间设置
-     * 6:未定义
+     * 6:其他设置
+     * ***INFO***
+     * 目前在其他设置中规划的只有alarm温度设置
      * 7:未定义
      * */
     byte temperatureWarning : 1;

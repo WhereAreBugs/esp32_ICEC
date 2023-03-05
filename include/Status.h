@@ -43,6 +43,7 @@ public:
     void loop();
     SYSStatus get_Status();
     void set_Status(uint8_t status);
+    void timeSetNow(uint8_t timeSetNow);
 };
 
 

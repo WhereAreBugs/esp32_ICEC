@@ -28,8 +28,8 @@ private:
 
 public:
     void setup();
-    bool getAlarmEn();
-    TimeSet getTimeSet();
+    static bool getAlarmEn();
+    static TimeSet getTimeSet();
 };
 void button_handle1();
 void button_handle2();
@@ -40,5 +40,8 @@ void button_handle2_long_press();
 void button_handle3_long_press();
 void button_handle4_long_press();
 void button_handle1_double_click();
+void button_handle3_double_click();
+void button_handle4_double_click();
+
 bool is_runnina(int a);
 #endif //ESP32_ICEC_TOUCHBUTTON_H

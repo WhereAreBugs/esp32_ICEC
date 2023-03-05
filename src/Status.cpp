@@ -21,3 +21,7 @@ void SYSManeger::set_Status(uint8_t status) {
 
 }
 
+void SYSManeger::timeSetNow(uint8_t timeSetNow) {
+    this->status.timeSetNow = timeSetNow;
+}
+

@@ -224,7 +224,7 @@ void button_handle2_long_press()
 
 void button_handle3() {
     /*
-     * Fn: "+2s步进" "温度加"
+     * Fn: "+2s步进"
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */

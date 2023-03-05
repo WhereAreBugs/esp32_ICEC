@@ -8,6 +8,8 @@ private:
     bool en;
 public:
     void setAlarm(bool en,DateTime time);
+    void setup();
+    void loop();
 };
 
 #endif //ESP32_ICEC_ALARM_H

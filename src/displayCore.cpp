@@ -4,7 +4,7 @@
 
 #include "displayCore.h"
 #include "Fontdata.h"
-
+#include "TouchButton.h"
 U8G2_SSD1309_128X64_NONAME0_2_SW_I2C u8g2(U8G2_R0, SCL, SDA);
 void displayCore::setup() {
     display = &u8g2;
@@ -17,6 +17,7 @@ void displayCore::setup() {
     display->setCursor(0,16);
     display->println("稍安勿躁...");
     display->sendBuffer();
+
 }
 
 void displayCore::loop() {

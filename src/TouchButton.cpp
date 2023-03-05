@@ -9,7 +9,7 @@ TimeSet timeSet;
 bool alarmEn = false;
 extern SYSManeger sysManeger;
 extern DS1307 ds;
-
+extern double alarmTemp;
 void TouchButton::setup() {
     button1->attachClick(button_handle1);
     button1->attachLongPressStop(button_handle1_long_press);
@@ -44,7 +44,7 @@ void button_handle1() {
         sysManeger.set_Status(0x00);
     } else {
         uint8_t result = sysManeger.get_Status().summary;
-        if ((result & 0x0e) < 0x0a) {
+        if ((result & 0x0e) < 0x0c) {
             result = result + 0x02;
         } else
             result = result & 0xf1;
@@ -55,7 +55,7 @@ void button_handle1() {
 
 void button_handle2() {
     /*
-     * Fn: "+1s步进"
+     * Fn: "+1s步进" "温度减"
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
@@ -119,7 +119,14 @@ void button_handle2() {
             timeSet.second++;
         }
     }
-
+    if ((result & 0x0e) == 0x0c)
+        //处在其他设置的界面
+    {
+        if (alarmTemp <= 0)
+            alarmTemp = 0;
+        else
+            alarmTemp--;
+    }
 
 }
 
@@ -217,7 +224,7 @@ void button_handle2_long_press()
 
 void button_handle3() {
     /*
-     * Fn: "+2s步进"
+     * Fn: "+2s步进" "温度加"
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
@@ -281,8 +288,14 @@ void button_handle3() {
             timeSet.second += 2;
         }
     }
+    if ((result & 0x0e) == 0x0c) {
+        //处在调整温度的界面
+        if (alarmTemp < 50) {
+            alarmTemp++;
+        } else
+            alarmTemp = 0;
 
-
+    }
 }
 
 void button_handle3_long_press()

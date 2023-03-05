@@ -9,7 +9,7 @@
 extern displayCore displayCore;
 extern temperature temperature;
 extern pwmCaputre pwm;
-
+double alarmTemp = 30.0;
 
 void SYSManeger::setup() {
     status.summary = 0;
@@ -17,8 +17,14 @@ void SYSManeger::setup() {
 }
 
 void SYSManeger::loop() {
-    if (status.currentPage==0) {
-        temperature.loop();
+    temperature.loop();
+    if (temperature.getTemp()>alarmTemp)
+    {
+        status.summary |= 0x01;
+    }
+    else
+    {
+        status.summary &= 0xFE;
     }
     if (status.currentPage==1) {
         if (!pwm.is_running())
@@ -32,7 +38,7 @@ void SYSManeger::loop() {
         Serial.println("[ERROR] timeSetNow is out of range!");
         status.timeSetNow=0;
     }
-    if (status.currentPage>=6)
+    if (status.currentPage>=7)
     {
         Serial.println("[ERROR] currentPage is out of range!");
         status.currentPage=0;

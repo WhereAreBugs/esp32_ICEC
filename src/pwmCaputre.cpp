@@ -12,15 +12,14 @@ pwmCaputre * _this = nullptr;
 void capture_stak(void *arg)
 {
     EventBits_t uxBits;
-
-    capture_duty_install_service();
-
     while(true)
     {
         if (!_this->is_running()) {
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
+            vTaskDelay(200);
+            yield();
             continue;
         }
+        capture_duty_install_service();
         uxBits = xEventGroupWaitBits(xEventGroup_Handle,
                                      GET_DUTY_EVENT | GET_FREQUENCY_EVENT,
                                      pdTRUE,
@@ -31,13 +30,16 @@ void capture_stak(void *arg)
             _this->pwmInfo.t0_h = cap.t0_h_time;
             _this->pwmInfo.T = cap.cycle_time;
             _this->pwmInfo.duty = (float)cap.t0_h_time / cap.cycle_time * 100;
+            Serial.printf("t0_h_time:%llu,cycle_time:%llu,duty:%f",_this->pwmInfo.t0_h,_this->pwmInfo.T,_this->pwmInfo.duty);
+            Serial.println(" Success");
             capture_duty_uninstall_service();
             capture_frequency_install_service();
         }
         else if(uxBits & GET_FREQUENCY_EVENT)
         {
-            ESP_LOGI(TAG,"frequency :%d Hz\n",-cap.frequency);
-_this->pwmInfo.freq = -cap.frequency;
+            _this->pwmInfo.freq = -cap.frequency;
+            Serial.printf("frequency:%u",_this->pwmInfo.freq);
+            Serial.println(" Success");
             capture_frequency_uninstall_service();
         }
     }

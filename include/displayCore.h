@@ -23,7 +23,6 @@ private:
 public:
     void setup();
     void loop();
-    void SetPage(int page);
 
 };
 

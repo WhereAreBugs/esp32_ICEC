@@ -25,12 +25,12 @@ void setup() {
     serialIo.setup();
     /*   SYS指示灯引脚初始化   */
     pinMode(2,OUTPUT);
-    Serial.println("ESP32 setup() ended");
     displayCore.setup();
-    displayCore.SetPage(mainMenu);
     temperature.setup();
     touches.setup();
     ds.setup();
+    Serial.println("ESP32 setup() ended");
+    pwm.setup();
 
 }
 

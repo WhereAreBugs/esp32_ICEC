@@ -6,7 +6,8 @@
 extern EventGroupHandle_t xEventGroup_Handle;
 esp_timer_handle_t esp_timer_handle;
 input_capture_t cap = {0};
-
+bool is_init = false;
+bool is_frequency_init = false;
 static void IRAM_ATTR exti_isr_handler(void *arg)
 {
     static uint8_t status = 0;
@@ -137,22 +138,34 @@ void  capture_duty_install_service(void)
 {
     Hardware_Timer_Init();
     EXTI_Init();
+    is_init = true;
 }
 
 void  capture_duty_uninstall_service(void)
 {
+    if (!is_init)
+    {
+        return;
+    }
     gpio_isr_handler_remove(EXTI_GPIO_PIN);
     timer_deinit(TIMER_GROUP,TIMER_INDEX);
+    is_init = false;
 }
 
 void  capture_frequency_install_service(void)
 {
     Pcnt_Init();
     Software_Timer_Init();
+    is_frequency_init = true;
 }
 
 void  capture_frequency_uninstall_service(void)
 {
+    if (!is_frequency_init)
+    {
+        return;
+    }
     esp_timer_stop(esp_timer_handle);
     esp_timer_delete(esp_timer_handle);
+    is_frequency_init = false;
 }

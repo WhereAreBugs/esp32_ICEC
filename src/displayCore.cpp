@@ -23,6 +23,3 @@ void displayCore::loop() {
 
 }
 
-void displayCore::SetPage(int page) {
-
-}

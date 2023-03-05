@@ -38,6 +38,8 @@ DateTime DS1307::getTime() {
 }
 
 bool DS1307::setTime(DateTime time) {
+    String timeStr  = String(time.year()) + "-" + String(time.month()) + "-" + String(time.day()) + " " + String(time.hour()) + ":" + String(time.minute()) + ":" + String(time.second());
+    Serial.println(timeStr+"is set");
     rtc.adjust(time);
     return true;
 

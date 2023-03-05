@@ -3,45 +3,62 @@
 //
 #include <Arduino.h>
 #include "settings.h"
+#include "test_cap.h"
 #include "pwmCaputre.h"
 
-PWM_Analyzer pwmAn(PWM_CH1);
 
-void pwmCaputre::setup() {
-    pwm = &pwmAn;
-    pinMode(PWM_CH1, INPUT);
-    pwm->Stop();
+EventGroupHandle_t   xEventGroup_Handle = NULL;
+pwmCaputre * _this = nullptr;
+void capture_stak(void *arg)
+{
+    EventBits_t uxBits;
+
+    capture_duty_install_service();
+
+    while(true)
+    {
+        if (!_this->is_running()) {
+            vTaskDelay(1000 / portTICK_PERIOD_MS);
+            continue;
+        }
+        uxBits = xEventGroupWaitBits(xEventGroup_Handle,
+                                     GET_DUTY_EVENT | GET_FREQUENCY_EVENT,
+                                     pdTRUE,
+                                     pdFALSE,
+                                     portMAX_DELAY);
+        if(uxBits & GET_DUTY_EVENT)
+        {
+            _this->pwmInfo.t0_h = cap.t0_h_time;
+            _this->pwmInfo.T = cap.cycle_time;
+            _this->pwmInfo.duty = (float)cap.t0_h_time / cap.cycle_time * 100;
+            capture_duty_uninstall_service();
+            capture_frequency_install_service();
+        }
+        else if(uxBits & GET_FREQUENCY_EVENT)
+        {
+            ESP_LOGI(TAG,"frequency :%d Hz\n",-cap.frequency);
+_this->pwmInfo.freq = -cap.frequency;
+            capture_frequency_uninstall_service();
+        }
+    }
 }
 
-bool pwmCaputre::is_running() {
+void pwmCaputre::setup() {
+    xEventGroup_Handle = xEventGroupCreate();
+    xTaskCreate(capture_stak,"capture_stak",1024 * 5,NULL,5,NULL);
+    _this = this;
+}
+
+
+bool pwmCaputre::is_running() const {
     return running;
 }
 
 void pwmCaputre::start() {
     running = true;
-    if (pwm == nullptr) {
-        Serial.println("[警告] [PWMCaputre] 空指针错误");
-        return;
-    }
-    pwm->Restart();
+
 }
 void pwmCaputre::stop() {
     running = false;
-    if (pwm == nullptr) {
-        Serial.println("[警告] [PWMCaputre] 空指针错误");
-        return;
-    }
-    pwm->Stop();
 }
 
-pwmCaputre::PWM_INFO pwmCaputre::get_info() {
-    if (pwm== nullptr) {
-        Serial.println("[警告] [PWMCaputre] 空指针错误");
-        return {0, 0};
-    }
-    if (running) {
-        return {pwm->Get_PWM_frequency(), pwm->Get_PWM_duty_cycle()};
-    }
-    Serial.println("[警告] [PWMCaputre] 未启动");
-    return {0, 0};
-}

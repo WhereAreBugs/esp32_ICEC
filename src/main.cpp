@@ -7,6 +7,7 @@
 #include "Status.h"
 #include "DS1307_time.h"
 #include "TouchButton.h"
+#include "pwmCaputre.h"
 
 volatile bool SYSisOff = true;
 
@@ -17,6 +18,7 @@ displayCore displayCore;
 SYSManeger sysManeger;
 TouchButton touches;
 DS1307 ds;
+pwmCaputre pwm;
 
 void setup() {
     Wire.begin(SDA_PIN,SCL_PIN);
@@ -39,14 +41,12 @@ void loop() {
     else
         digitalWrite(2,LOW);
     SYSisOff = !SYSisOff;
-    delay(200);
+    /*   SYS循环指示灯结束   */
+    /*   loop函数开始   */
     serialIo.loop();
     displayCore.loop();
-    /*   SYS循环指示灯结束   */
     sysManeger.loop();
-    temperature.loop();
+    /*   loop函数结束   */
+    /*   读取时间   */
     ds.readTime();
-
-
-
 }

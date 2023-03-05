@@ -43,5 +43,5 @@ void button_handle1_double_click();
 void button_handle3_double_click();
 void button_handle4_double_click();
 
-bool is_runnina(int a);
+bool is_doubleYear(int a);
 #endif //ESP32_ICEC_TOUCHBUTTON_H

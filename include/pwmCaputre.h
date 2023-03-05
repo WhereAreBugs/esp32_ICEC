@@ -6,25 +6,25 @@
 #define ESP32_ICEC_PWMCAPUTRE_H
 
 #include <Arduino.h>
-#include <pwm_analyzer.h>
-
+#include "driver/mcpwm.h"
+#include "soc/mcpwm_reg.h"
 
 class pwmCaputre {
 private:
-    PWM_Analyzer *pwm = nullptr;
-    struct PWM_INFO {
-        uint32_t freq;
-        double duty;
-    };
     bool running = false;
 public:
     void setup();
 
     void start();
+    bool is_running() const;
 
-    bool is_running();
-    struct PWM_INFO get_info();
     void stop();
+    struct PWM_INFO {
+        uint32_t freq;
+        double duty;//占空比
+        uint64_t t0_h;//high_time
+        uint64_t T;//cycle_time
+    }pwmInfo{};
 };
 
 

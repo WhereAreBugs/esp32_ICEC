@@ -42,7 +42,7 @@ public:
     void setup();
     void loop();
     SYSStatus get_Status();
-    void set_Status(uint8_t status);
+    void set_Status(uint8_t _status);
     void timeSetNow(uint8_t timeSetNow);
 };
 

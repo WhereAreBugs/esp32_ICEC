@@ -84,12 +84,12 @@ void button_handle2() {
             if (timeSet.day >= daysOfMounth[timeSet.month - 1] && timeSet.month != 2) {
                 timeSet.day = 1;
                 return;
-            } else if (timeSet.month == 2 && is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 29) {
                     timeSet.day = 1;
                     return;
                 }
-            } else if (timeSet.month == 2 && !is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && !is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 28) {
                     timeSet.day = 1;
                     return;
@@ -177,12 +177,12 @@ void button_handle2_long_press()
             if (timeSet.day >= daysOfMounth[timeSet.month - 1] && timeSet.month != 2) {
                 timeSet.day = 1;
                 return;
-            } else if (timeSet.month == 2 && is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 29) {
                     timeSet.day = 1;
                     return;
                 }
-            } else if (timeSet.month == 2 && !is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && !is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 28) {
                     timeSet.day = 1;
                     return;
@@ -246,12 +246,12 @@ void button_handle3() {
             if (timeSet.day >= daysOfMounth[timeSet.month - 1] && timeSet.month != 2) {
                 timeSet.day = 1;
                 return;
-            } else if (timeSet.month == 2 && is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 28) {
                     timeSet.day = 1;
                     return;
                 }
-            } else if (timeSet.month == 2 && !is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && !is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 27) {
                     timeSet.day = 1;
                     return;
@@ -317,12 +317,12 @@ void button_handle3_long_press()
             if (timeSet.day >= daysOfMounth[timeSet.month - 1] && timeSet.month != 2) {
                 timeSet.day = 1;
                 return;
-            } else if (timeSet.month == 2 && is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 28) {
                     timeSet.day = 1;
                     return;
                 }
-            } else if (timeSet.month == 2 && !is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && !is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 27) {
                     timeSet.day = 1;
                     return;
@@ -386,12 +386,12 @@ void button_handle4() {
             if (timeSet.day >= daysOfMounth[timeSet.month - 1] - 5 && timeSet.month != 2) {
                 timeSet.day = 1;
                 return;
-            } else if (timeSet.month == 2 && is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 24) {
                     timeSet.day = 1;
                     return;
                 }
-            } else if (timeSet.month == 2 && !is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && !is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 23) {
                     timeSet.day = 1;
                     return;
@@ -457,12 +457,12 @@ void button_handle4_long_press()
             if (timeSet.day >= daysOfMounth[timeSet.month - 1] - 5 && timeSet.month != 2) {
                 timeSet.day = 1;
                 return;
-            } else if (timeSet.month == 2 && is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 25) {
                     timeSet.day = 1;
                     return;
                 }
-            } else if (timeSet.month == 2 && !is_runnina(timeSet.year)) {
+            } else if (timeSet.month == 2 && !is_doubleYear(timeSet.year)) {
                 if (timeSet.day >= 24) {
                     timeSet.day = 1;
                     return;
@@ -527,7 +527,7 @@ void button_handle3_double_click() {
             sysManeger.timeSetNow(6);
             return;
         } else {
-            sysManeger.timeSetNow(((result & 0xe0) >> 5 )- 1);
+            sysManeger.timeSetNow(((result & 0xe0) >> 5) - 1);
             return;
         }
     }
@@ -547,8 +547,20 @@ void button_handle4_double_click() {
             sysManeger.timeSetNow(1);
             return;
         } else {
-            sysManeger.timeSetNow(((result & 0xe0) >> 5 )+ 1);
+            sysManeger.timeSetNow(((result & 0xe0) >> 5) + 1);
             return;
+        }
+    }
+}
+
+bool is_doubleYear(int a) {
+    if (a / 4 == 0 && a / 100 != 0) {
+        return true;
+    } else {
+        if (a / 400 == 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -6,7 +6,7 @@
 #define ESP32_ICEC_SETTINGS_H
 #define SDA_PIN 21
 #define SCL_PIN 22
-#define DHTPIN 17
+#define DHTPIN 32
 /* trigPin和echoPin用于超声波 */
 #define trigPin  26
 #define echoPin  25

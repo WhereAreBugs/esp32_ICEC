@@ -8,6 +8,7 @@
 #include "DS1307_time.h"
 #include "TouchButton.h"
 #include "pwmCaputre.h"
+#include "alarm.h"
 
 volatile bool SYSisOff = true;
 
@@ -19,6 +20,7 @@ SYSManeger sysManeger;
 TouchButton touches;
 DS1307 ds;
 pwmCaputre pwm;
+AlarmManagement ala;
 
 void setup() {
     Wire.begin(SDA_PIN,SCL_PIN);
@@ -31,6 +33,7 @@ void setup() {
     ds.setup();
     Serial.println("ESP32 setup() ended");
     pwm.setup();
+    ala.setup();
 
 }
 
@@ -49,5 +52,5 @@ void loop() {
     /*   loop函数结束   */
     /*   读取时间   */
     ds.readTime();
-
+    ala.loop();
 }

@@ -26,11 +26,17 @@ private:
     OneButton * button3 = new OneButton(BUTTON3, true);
     OneButton * button4 = new OneButton(BUTTON4, true);
 
+
 public:
     void setup();
     static bool getAlarmEn();
     static TimeSet getTimeSet();
 };
+
+
+
+
+
 void button_handle1();
 void button_handle2();
 void button_handle3();

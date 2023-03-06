@@ -8,13 +8,13 @@
 #define SCL_PIN 22
 #define DHTPIN 17
 /* trigPin和echoPin用于超声波 */
-#define trigPin  25
-#define echoPin  26
+#define trigPin  26
+#define echoPin  25
 #define DS1307_ADDRESS 0x68
 #define BUTTON1 18
 #define BUTTON2 19
-#define BUTTON3 14
-#define BUTTON4 13
+#define BUTTON3 13
+#define BUTTON4 14
 #define LED_OUTPUT 23
 #define BUZZER_OUTPUT 27
 #define PWM_CH1 34

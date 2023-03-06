@@ -5,6 +5,7 @@
 #include "displayCore.h"
 #include "Fontdata.h"
 #include "TouchButton.h"
+extern TouchButton touches;
 U8G2_SSD1309_128X64_NONAME0_2_SW_I2C u8g2(U8G2_R0, SCL, SDA);
 void displayCore::setup() {
     display = &u8g2;

@@ -29,10 +29,6 @@ void DS1307::readTime(){
    }
 }
 
-byte DS1307::bcdToDec(int read) {
-    return ((read / 16 * 10) + (read % 16));
-}
-
 DateTime DS1307::getTime() {
     return now;
 }

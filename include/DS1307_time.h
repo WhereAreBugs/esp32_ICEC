@@ -26,7 +26,6 @@ private:
     RTC_DS1307 rtc;
     const char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     DS1307_status Status = DS1307_ERROR_CONNECT;
-    static byte bcdToDec(int read);
 public:
     void setup();
     void readTime();

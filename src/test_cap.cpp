@@ -95,10 +95,9 @@ static void Pcnt_Init(void)
     pcnt_set_filter_value(PCNT_UNIT, 100); // 第二个参数的注释为PCNT信号的滤波值，计数器在APB_CLK周期的任何持续时间比这短的脉冲将被忽略，当过滤器被启用时。
     pcnt_filter_enable(PCNT_UNIT);
 
-   // pcnt_counter_pause(PCNT_UNIT);          //暂停计数
-    //pcnt_counter_clear(PCNT_UNIT);          //清除计数
-
-//    pcnt_counter_resume(PCNT_UNIT);         //开始计数
+    pcnt_counter_pause(PCNT_UNIT);          //暂停计数
+    pcnt_counter_clear(PCNT_UNIT);          //清除计数
+    pcnt_counter_resume(PCNT_UNIT);         //开始计数
 }
 
 //软件定时器回调函数

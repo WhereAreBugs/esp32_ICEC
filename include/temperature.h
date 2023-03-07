@@ -13,10 +13,9 @@ public:
     float getTemp() const;
     float getHum() const;
     ComfortState getComfortState();
-
+    float gethua() const;
 
 private:
-    const int dhtPin = 17;
     DHTesp dht{};
     TempAndHumidity newValues{};
 /** Comfort profile */

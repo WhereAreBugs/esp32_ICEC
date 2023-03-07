@@ -40,3 +40,8 @@ ComfortState temperature::getComfortState() {
 }
 
 
+float temperature::gethua() const{
+    float a1;
+    a1=getTemp();
+    a1=a1*1.8+32;
+}

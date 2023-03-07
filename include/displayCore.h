@@ -11,12 +11,10 @@
 #include "temperature.h"
 #include "DS1307_time.h"
 
-enum pages {mainMenu,alarmSet,onAlarm,pwmAnalytic,getDistance,aboutGroup,timeSet};
 
 class displayCore {
 private:
-    pages page = mainMenu;
-    U8G2_SSD1309_128X64_NONAME0_2_SW_I2C * display = nullptr;
+    U8G2_SSD1309_128X64_NONAME0_F_SW_I2C * display = nullptr;
     temperature * temp = nullptr;
     DS1307 * ds = nullptr;
 

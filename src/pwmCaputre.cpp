@@ -8,13 +8,13 @@
 
 
 EventGroupHandle_t   xEventGroup_Handle = NULL;
-pwmCaputre * _this = nullptr;
+pwmCaputre * __this__ = nullptr;
 void capture_stak(void *arg)
 {
     EventBits_t uxBits;
     while(true)
     {
-        if (!_this->is_running()) {
+        if (!__this__->is_running()) {
             vTaskDelay(200);
             yield();
             continue;
@@ -27,18 +27,18 @@ void capture_stak(void *arg)
                                      portMAX_DELAY);
         if(uxBits & GET_DUTY_EVENT)
         {
-            _this->pwmInfo.t0_h = cap.t0_h_time;
-            _this->pwmInfo.T = cap.cycle_time;
-            _this->pwmInfo.duty = (float)cap.t0_h_time / cap.cycle_time * 100;
-            Serial.printf("t0_h_time:%llu,cycle_time:%llu,duty:%f",_this->pwmInfo.t0_h,_this->pwmInfo.T,_this->pwmInfo.duty);
+            __this__->pwmInfo.t0_h = cap.t0_h_time;
+            __this__->pwmInfo.T = cap.cycle_time;
+            __this__->pwmInfo.duty = (float)cap.t0_h_time / cap.cycle_time * 100;
+            Serial.printf("t0_h_time:%llu,cycle_time:%llu,duty:%f", __this__->pwmInfo.t0_h, __this__->pwmInfo.T, __this__->pwmInfo.duty);
             Serial.println(" Success");
             capture_duty_uninstall_service();
             capture_frequency_install_service();
         }
         else if(uxBits & GET_FREQUENCY_EVENT)
         {
-            _this->pwmInfo.freq = -cap.frequency;
-            Serial.printf("frequency:%u",_this->pwmInfo.freq);
+            __this__->pwmInfo.freq = -cap.frequency;
+            Serial.printf("frequency:%u", __this__->pwmInfo.freq);
             Serial.println(" Success");
             capture_frequency_uninstall_service();
         }
@@ -48,7 +48,7 @@ void capture_stak(void *arg)
 void pwmCaputre::setup() {
     xEventGroup_Handle = xEventGroupCreate();
     xTaskCreate(capture_stak,"capture_stak",1024 * 5,NULL,5,NULL);
-    _this = this;
+    __this__ = this;
 }
 
 

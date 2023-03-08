@@ -10,6 +10,10 @@ public:
     void setAlarm(bool en,DateTime time);
     void setup();
     void loop();
+    DateTime getAlarmSet()
+    {
+        return alarmSet;
+    }
 };
 
 #endif //ESP32_ICEC_ALARM_H

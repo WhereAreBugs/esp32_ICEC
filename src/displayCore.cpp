@@ -35,6 +35,8 @@ void displayCore::setup() {
 }
 
 void displayCore::loop() {
+    if (display == nullptr)
+        return;
     TimeSet text = TouchButton::getTimeSet();
     switch(sysManeger.get_Status().currentPage)
     {
@@ -98,6 +100,7 @@ void displayCore::loop() {
                 case 4:display->print(""); break;
                 case 5:display->print(""); break;
                 case 6:display->print(""); break;
+                default: Serial.println("Display loop: switch error!");
             }
             delay(500);
             display->sendBuffer();

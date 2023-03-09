@@ -5,9 +5,8 @@
 class AlarmManagement{
 private:
     DateTime alarmSet;
-    bool en;
 public:
-    void setAlarm(bool en,DateTime time);
+    void setAlarm(DateTime time);
     void setup();
     void loop();
     DateTime getAlarmSet()

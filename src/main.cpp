@@ -20,7 +20,7 @@ SYSManeger sysManeger;
 TouchButton touches;
 DS1307 ds;
 pwmCaputre pwm;
-AlarmManagement ala;
+AlarmManagement alarmMana;
 
 void setup() {
     Wire.begin(SDA_PIN,SCL_PIN);
@@ -33,7 +33,7 @@ void setup() {
     ds.setup();
     Serial.println("ESP32 setup() ended");
     pwm.setup();
-    ala.setup();
+    alarmMana.setup();
 
 }
 
@@ -52,5 +52,5 @@ void loop() {
     /*   loop函数结束   */
     /*   读取时间   */
     ds.readTime();
-    ala.loop();
+    alarmMana.loop();
 }

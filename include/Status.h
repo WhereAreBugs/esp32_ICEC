@@ -6,6 +6,9 @@
 #include <Arduino.h>
 union SYSStatus{
     byte alarmEN : 1;
+    /* 0:关闭
+     * 1:开启
+     * */
     byte currentPage : 3; //max:3
     /* 0:主界面，温度
      * 1:PWM
@@ -16,7 +19,7 @@ union SYSStatus{
      * 6:其他设置
      * ***INFO***
      * 目前在其他设置中规划的只有alarm温度设置
-     * 7:未定义
+     * 7:闹钟响起！
      * */
     byte temperatureWarning : 1;
     byte timeSetNow : 3;
@@ -27,7 +30,7 @@ union SYSStatus{
      * 4:设置时
      * 5:设置分
      * 6:设置秒
-     * 7:未定义
+     * 7:设置闹钟en(仅在alarm设置中有效)
      * */
     uint8_t summary = 0;
 };
@@ -36,7 +39,6 @@ class SYSManeger{
      * 用于管理系统部分IO的启用和关闭
      * 1. distance
      * 2. DHT11
-     * 3.
      */
 private:
     SYSStatus status;

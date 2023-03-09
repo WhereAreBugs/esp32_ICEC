@@ -11,6 +11,8 @@
 #include "DS1307_time.h"
 struct TS
 {
+    TS(uint16_t i, uint8_t i1, uint8_t i2, uint8_t i3, uint8_t i4, uint8_t i5);
+    TS();
     int year = 2000;
     byte month = 1;
     byte day = 1;

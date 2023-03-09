@@ -18,7 +18,7 @@ extern pwmCaputre * this_;
 extern SYSStatus get_Status();
 extern double getDistance();
 U8G2_SSD1309_128X64_NONAME0_F_SW_I2C u8g2(U8G2_R0, SCL, SDA);
-TimeSet text = touches.getTimeSet();
+
 extern AlarmManagement alarmMana;
 
 void displayCore::setup() {
@@ -34,7 +34,7 @@ void displayCore::setup() {
 }
 
 void displayCore::loop() {
-
+    TimeSet text = TouchButton::getTimeSet();
     switch(sysManeger.get_Status().currentPage)
     {
         case 0:

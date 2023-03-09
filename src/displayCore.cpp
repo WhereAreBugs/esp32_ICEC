@@ -84,7 +84,7 @@ void displayCore::loop() {
                 page1=sysManeger.get_Status().currentPage;
                 display->clearDisplay();
                 display->setCursor(0,16);
-                display->print("clockchange:");
+                display->print("clock change:");
                 display->setCursor(0,32);
                 display->print(String(alarmMana.getAlarmSet().hour())+":"+String(alarmMana.getAlarmSet().minute())+":"+String(alarmMana.getAlarmSet().second()));
             }
@@ -127,7 +127,7 @@ void displayCore::loop() {
                 display->clearDisplay();
             }
             display->setCursor(0,16);
-            display->print("memeber:");
+            display->print("member:");
             display->print("徐 简 魏");
             display->sendBuffer();
             break;
@@ -139,7 +139,7 @@ void displayCore::loop() {
                 page1=sysManeger.get_Status().currentPage;
                 display->clearDisplay();
                 display->setCursor(0,16);
-                display->print("timechange:");
+                display->print("time change:");
                 display->setCursor(0,32);
                 display->print(String(text.year)+"年"+String(text.month)+"月"+String(text.day)+"日");
                 display->setCursor(0,48);

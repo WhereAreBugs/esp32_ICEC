@@ -33,12 +33,12 @@ void SYSManeger::loop() {
     if (pwm.is_running()&&status.currentPage!=1) {
         pwm.stop();
     }
-    if (status.timeSetNow>=7)
+    if (status.timeSetNow>=8)
     {
         Serial.println("[ERROR] timeSetNow is out of range!");
         status.timeSetNow=0;
     }
-    if (status.currentPage>=7)
+    if (status.currentPage>=8)
     {
         Serial.println("[ERROR] currentPage is out of range!");
         status.currentPage=0;

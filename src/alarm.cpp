@@ -7,13 +7,12 @@ byte alarmCount = 0;
 byte ledCount = 0;
 extern DS1307 ds;
 extern SYSManeger sysManeger;
-void AlarmManagement::setAlarm(bool en, DateTime time) {
-    this->en = en;
+void AlarmManagement::setAlarm(DateTime time) {
     this->alarmSet = time;
 }
 void alarmEvent(){
     auto result = sysManeger.get_Status();
-    if (result.alarmEN == 1) {
+    if (result.currentPage == 7) {
         if (alarmCount < 3)
         {
             digitalWrite(BUZZER_OUTPUT,HIGH);
@@ -21,7 +20,7 @@ void alarmEvent(){
         else
         {
             digitalWrite(BUZZER_OUTPUT,LOW);
-            result.alarmEN = 0;
+            result.currentPage = 0;
             sysManeger.set_Status(result.summary);
             alarmCount = 0;
         }
@@ -45,7 +44,9 @@ void alarmEvent(){
     }
 }
 void AlarmManagement::setup() {
-    en = false;
+    auto i = sysManeger.get_Status();
+    i.alarmEN = false;
+    sysManeger.set_Status(i.summary);
     alarmSet = DateTime(2000,0,0,0,0,0);
     pinMode(LED_OUTPUT,OUTPUT);
     pinMode(BUZZER_OUTPUT,OUTPUT);
@@ -57,7 +58,8 @@ void AlarmManagement::setup() {
 }
 
 void AlarmManagement::loop() {
-    if (en) {
+    if (sysManeger.get_Status().alarmEN) {
+        //TODO: change the time judge method
         if (alarmSet == ds.getTime()) {
             auto result = sysManeger.get_Status();
             result.alarmEN = 1;

@@ -3,13 +3,14 @@
 //
 
 #include "TouchButton.h"
+#include "alarm.h"
 
 const short daysOfMounth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 TimeSet timeSet;
-bool alarmEn = false;
 extern SYSManeger sysManeger;
 extern DS1307 ds;
 extern double alarmTemp;
+extern AlarmManagement alarmMana;
 void TouchButton::setup() {
     button1->attachClick(button_handle1);
     button1->attachLongPressStop(button_handle1_long_press);
@@ -26,7 +27,7 @@ void TouchButton::setup() {
 }
 
 bool TouchButton::getAlarmEn() {
-    return alarmEn;
+    return sysManeger.get_Status().alarmEN;
 }
 
 TimeSet TouchButton::getTimeSet() {
@@ -39,11 +40,12 @@ void button_handle1() {
      * Fixed: True[该按键的功能将会固定]
      * WARNING: 理论上任何情况下该按钮都会生效
      */
-    if (sysManeger.get_Status().summary & 0x01) {
+    auto status = sysManeger.get_Status();
+    if (status.summary & 0x01) {
         //闹钟开启状态
         sysManeger.set_Status(0x00);
     } else {
-        uint8_t result = sysManeger.get_Status().summary;
+        uint8_t result =status.summary;
         if ((result & 0x0e) < 0x0c) {
             result = result + 0x02;
         } else
@@ -51,6 +53,12 @@ void button_handle1() {
         //更换页面。若页面超出范围则返回主界面
         sysManeger.set_Status(result);
     }
+    if (status.currentPage == 2)
+    {
+       auto alarm =  alarmMana.getAlarmSet();
+       timeSet = {alarm.year(),alarm.month(),alarm.day(),alarm.hour(),alarm.minute(),alarm.second()};
+    }
+
 }
 
 void button_handle2() {
@@ -59,7 +67,8 @@ void button_handle2() {
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
-    uint8_t result = sysManeger.get_Status().summary;
+    SYSStatus status = sysManeger.get_Status();
+    uint8_t result = status.summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
         //处在调整时间的界面
         if ((result & 0xe0) == 0x00) {
@@ -119,14 +128,6 @@ void button_handle2() {
             timeSet.second++;
         }
     }
-    if ((result & 0x0e) == 0x0c)
-        //处在其他设置的界面
-    {
-        if (alarmTemp <= 0)
-            alarmTemp = 0;
-        else
-            alarmTemp--;
-    }
 
 }
 
@@ -148,7 +149,8 @@ void button_handle1_long_press()
     } else if ((result & 0x0e) == 0x04)
         //处在调整闹钟的界面
     {
-
+        alarmMana.setAlarm(DateTime(timeSet.year, timeSet.month, timeSet.day,
+                                    timeSet.hour, timeSet.minute, timeSet.second));
     }
 }
 
@@ -520,7 +522,8 @@ void button_handle1_double_click()
     if ((result & 0x0e) == 0x04)
         //处在闹钟设置的界面
     {
-        alarmEn = !alarmEn;
+        result &= 0xfe;
+        sysManeger.set_Status(result);
         return;
     }
 

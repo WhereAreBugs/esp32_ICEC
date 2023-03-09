@@ -4,7 +4,6 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "serial_IO.h"
 #include "displayCore.h"
 #include "temperature.h"
 #include "settings.h"
@@ -13,14 +12,14 @@
 #include "TouchButton.h"
 #include "Fontdata.h"
 #include "pwmCaputre.h"
-byte page1=-1;
+int page1=-1;
 extern TouchButton touches;
-extern pwmCaputre pwm;
+extern pwmCaputre * this_;
 extern SYSStatus get_Status();
-double getDistance();
-extern SYSManeger sysManeger;
+extern double getDistance();
 U8G2_SSD1309_128X64_NONAME0_F_SW_I2C u8g2(U8G2_R0, SCL, SDA);
-
+TimeSet text = touches.getTimeSet();
+extern AlarmManagement alarmMana;
 
 void displayCore::setup() {
     display = &u8g2;
@@ -35,14 +34,12 @@ void displayCore::setup() {
 }
 
 void displayCore::loop() {
-    if (display == nullptr)
-        return;
-    TimeSet text = TouchButton::getTimeSet();
+
     switch(sysManeger.get_Status().currentPage)
     {
         case 0:
         {
-            if(sysManeger.get_Status().currentPage-page1)
+            if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
                 display->clearDisplay();
@@ -71,12 +68,12 @@ void displayCore::loop() {
             }
 
             display->setCursor(0,32);
-            display->print("频率:" + String(pwm.pwmInfo.freq) + "周期:" + String(pwm.pwmInfo.T));
+            display->print("频率:" + String(this_->pwmInfo.freq) + "周期:" + String(this_->pwmInfo.T));
             display->setCursor(0,48);
-            display->print("高电平:" + String(pwm.pwmInfo.t0_h) + "占空比:" + String(pwm.pwmInfo.duty));
-            display->drawHLine(0,49, 64 * pwm.pwmInfo.duty);
-            display->drawVLine(0, 64 * pwm.pwmInfo.duty, 15);
-            display->drawHLine(0,64,64*(1 - pwm.pwmInfo.duty));
+            display->print("高电平:" + String(this_->pwmInfo.t0_h) + "占空比:" + String(this_->pwmInfo.duty));
+            display->drawHLine(0,49, 64 * this_->pwmInfo.duty);
+            display->drawVLine(0, 64 * this_->pwmInfo.duty, 15);
+            display->drawHLine(0,64,64*(1 - this_->pwmInfo.duty));
             display->sendBuffer();
             break;
         }
@@ -89,18 +86,21 @@ void displayCore::loop() {
                 display->setCursor(0,16);
                 display->print("clockchange:");
                 display->setCursor(0,32);
-                display->print("");
+                display->print(String(alarmMana.getAlarmSet().hour())+":"+String(alarmMana.getAlarmSet().minute())+":"+String(alarmMana.getAlarmSet().second()));
             }
+            display->setCursor(0,48);
+            if(sysManeger.get_Status().alarmEN) display->print("ON ");
+            else display->print("OFF");
             display->setCursor((sysManeger.get_Status().timeSetNow-4)*16,32);
             display->print("  ");
             delay(500);
             display->sendBuffer();
             switch(sysManeger.get_Status().timeSetNow)
             {
-                case 4:display->print(""); break;
-                case 5:display->print(""); break;
-                case 6:display->print(""); break;
-                default: Serial.println("Display loop: switch error!");
+                case 4:display->print(String(alarmMana.getAlarmSet().hour())); break;
+                case 5:display->print(String(alarmMana.getAlarmSet().minute())); break;
+                case 6:display->print(String(alarmMana.getAlarmSet().second())); break;
+                default:display->print("error");
             }
             delay(500);
             display->sendBuffer();
@@ -161,9 +161,36 @@ void displayCore::loop() {
                 case 4:display->print(String(text.hour)); break;
                 case 5:display->print(String(text.minute)); break;
                 case 6:display->print(String(text.second)); break;
+                default:display->print("error");
             }
             delay(500);
             display->sendBuffer();
+        }
+        case 6:
+        {
+            if(sysManeger.get_Status().currentPage-page1!=0)
+            {
+                page1=sysManeger.get_Status().currentPage;
+                display->clearDisplay();
+                display->setCursor(0,16);
+                display->print("temp:"+String(temp->getTemp())+"˚C");
+            }
+        }
+        case 7:
+        {
+            if(sysManeger.get_Status().currentPage-page1!=0)
+            {
+                page1=sysManeger.get_Status().currentPage;
+                display->clearDisplay();
+                display->setCursor(0,16);
+                display->print(String(alarmMana.getAlarmSet().hour())+":"+String(alarmMana.getAlarmSet().minute())+":"+String(alarmMana.getAlarmSet().second()));
+            }
+        }
+
+        default:
+        {
+            display->setCursor(0,16);
+            display->print("error");
         }
 
     }

@@ -10,7 +10,12 @@
 #include <Wire.h>
 #include "temperature.h"
 #include "DS1307_time.h"
+#include "TouchButton.h"
+#include "alarm.h"
 
+
+extern TimeSet timeSet;
+extern SYSManeger sysManeger;
 
 class displayCore {
 private:
@@ -21,7 +26,6 @@ private:
 public:
     void setup();
     void loop();
-
 };
 
 

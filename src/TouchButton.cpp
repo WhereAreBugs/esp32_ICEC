@@ -56,6 +56,12 @@ void button_handle1() {
     if (status.currentPage == 2)
     {
        auto alarm =  alarmMana.getAlarmSet();
+       timeSet = {alarm.year(),alarm.month(),alarm.day(),alarm.hour(),alarm.minute(),alarm.second()};
+    }
+
+    if (status.currentPage == 2)
+    {
+       auto alarm =  alarmMana.getAlarmSet();
         timeSet = TS{alarm.year(),alarm.month(),alarm.day(),alarm.hour(),alarm.minute(),alarm.second()};
 
     }

@@ -5,7 +5,7 @@
 #include <Arduino.h>
 #include "DS1307_time.h"
 #include "logSystem.h"
-#include "settings.h"
+
 
 void DS1307::setup() {
     if (! rtc.begin()) {

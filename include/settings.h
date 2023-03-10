@@ -21,4 +21,5 @@
 #define PWM_CH2 35
 #define pre_UART_1_TX 32
 #define pre_UART_1_RX 33
+#define DEBUG_LEVEL LOG_LEVEL_DEBUG
 #endif //ESP32_ICEC_SETTINGS_H

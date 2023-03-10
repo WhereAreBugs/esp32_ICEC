@@ -4,6 +4,7 @@
 #include <Wire.h>
 #include <Arduino.h>
 #include "DS1307_time.h"
+#include "logSystem.h"
 #include "settings.h"
 
 void DS1307::setup() {
@@ -12,8 +13,9 @@ void DS1307::setup() {
         Serial.flush();
     }
     if (! rtc.isrunning()) {
-        Serial.println("RTC is NOT running, let's set the time!");
         Status = DS1307_ERROR_RESET;
+        log(MODULE_DS1307,LOG_LEVEL_WARNING,"RTC is NOT running, let's set the time!");
+
         // January 21, 2014 at 3am you would call:
         // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
     } else
@@ -25,7 +27,7 @@ void DS1307::readTime(){
    now = rtc.now();
    if(!now.isValid())
    {
-       Serial.println("RTC lost confidence in the DateTime!");
+       log(MODULE_DS1307,LOG_LEVEL_WARNING,"RTC is NOT valid, let's set the time!");
    }
 }
 

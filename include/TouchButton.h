@@ -31,7 +31,7 @@ private:
 
 public:
     void setup();
-
+    void loop();
     static TimeSet getTimeSet();
 };
 

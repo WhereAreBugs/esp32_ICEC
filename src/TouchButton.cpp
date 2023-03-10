@@ -35,6 +35,14 @@ TimeSet TouchButton::getTimeSet() {
     return timeSet;
 }
 
+void TouchButton::loop() {
+    button1->tick();
+    button2->tick();
+    button3->tick();
+    button4->tick();
+
+}
+
 void button_handle1() {
     /*
      * Fn: "切换功能按钮"、"完全关闭闹钟按钮"

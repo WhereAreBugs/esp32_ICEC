@@ -26,10 +26,6 @@ void TouchButton::setup() {
     log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"TouchButton setup complete!");
 }
 
-bool TouchButton::getAlarmEn() {
-    return sysManeger.get_Status().alarmEN;
-}
-
 TimeSet TouchButton::getTimeSet() {
 
     return timeSet;
@@ -548,7 +544,8 @@ void button_handle3_double_click() {
      * WARNING: 该按键在某些页面下不会生效
      */
     log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button3 double click");
-    uint8_t result = sysManeger.get_Status().summary;
+    SYSStatus status = sysManeger.get_Status();
+    uint8_t result = status.summary;
     if (((result & 0x0e) == 0x04) || ((result & 0x0e) == 0x0a)) {
         //处在调整时间的界面
         if ((result & 0xe0) <= 0x20) {
@@ -560,6 +557,15 @@ void button_handle3_double_click() {
             return;
         }
     }
+    if ((result & 0x0e) == 0x04)
+    //处在闹钟设置的界面
+    {
+        if (status.timeSetNow >=1 && status.timeSetNow<=3)
+        {
+            status.timeSetNow = 0;
+        }
+        sysManeger.timeSetNow(status.timeSetNow );
+    }
 }
 
 void button_handle4_double_click() {
@@ -569,7 +575,8 @@ void button_handle4_double_click() {
      * WARNING: 该按键在某些页面下不会生效
      */
     log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button4 double click");
-    uint8_t result = sysManeger.get_Status().summary;
+    SYSStatus status = sysManeger.get_Status();
+    uint8_t result = status.summary;
     if (((result & 0x0e) == 0x04) || ((result & 0x0e) == 0x0a)) {
         //处在调整时间的界面
         if ((result & 0xe0) >= 0xc0) {
@@ -580,6 +587,15 @@ void button_handle4_double_click() {
             sysManeger.timeSetNow(((result & 0xe0) >> 5) + 1);
             return;
         }
+    }
+    if ((result & 0x0e) == 0x04)
+        //处在闹钟设置的界面
+    {
+        if (status.timeSetNow >=1 && status.timeSetNow<=3)
+        {
+            status.timeSetNow = 4;
+        }
+        sysManeger.timeSetNow(status.timeSetNow );
     }
 }
 

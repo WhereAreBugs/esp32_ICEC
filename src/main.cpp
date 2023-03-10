@@ -29,7 +29,7 @@ void setup() {
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"ESP32 setup() started");
     pinMode(2,OUTPUT);
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"SYS LED pin setted");
-    displayCore.setup();
+//    displayCore.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"displayCore setup() called");
     temperature.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"temperature setup() called");
@@ -37,8 +37,8 @@ void setup() {
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"touches setup() called");
     ds.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"ds setup() called");
-//    pwm.setup();
-//    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"pwm setup() called");
+    pwm.setup();
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"pwm setup() called");
     alarmMana.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"alarmMana setup() called");
     log(MODULE_MAIN,LOG_LEVEL_INFO,"ESP32 setup() finished");
@@ -55,7 +55,7 @@ void loop() {
     /*   SYS循环指示灯结束   */
     /*   loop函数开始   */
     serialIo.loop();
-    displayCore.loop();
+//    displayCore.loop();
     sysManeger.loop();
     /*   loop函数结束   */
     /*   读取时间   */

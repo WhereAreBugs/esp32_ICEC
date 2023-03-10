@@ -10,6 +10,7 @@
 #include "pwmCaputre.h"
 #include "alarm.h"
 #include "logSystem.h"
+#include <Ticker.h>
 volatile bool SYSisOff = true;
 
 //实例化对象
@@ -42,6 +43,10 @@ void setup() {
     alarmMana.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"alarmMana setup() called");
     log(MODULE_MAIN,LOG_LEVEL_INFO,"ESP32 setup() finished");
+    Ticker buttonLoop;
+    buttonLoop.attach_ms(50, [](){
+        touches.loop();
+    });
 
 }
 
@@ -55,7 +60,7 @@ void loop() {
     /*   SYS循环指示灯结束   */
     /*   loop函数开始   */
     serialIo.loop();
-//    displayCore.loop();
+    displayCore.loop();
     sysManeger.loop();
     /*   loop函数结束   */
     /*   读取时间   */

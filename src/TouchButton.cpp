@@ -40,7 +40,7 @@ void TouchButton::loop() {
     button2->tick();
     button3->tick();
     button4->tick();
-
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"TouchButton loop complete!");
 }
 
 void button_handle1() {

@@ -37,8 +37,8 @@ void setup() {
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"touches setup() called");
     ds.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"ds setup() called");
-    pwm.setup();
-    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"pwm setup() called");
+//    pwm.setup();
+//    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"pwm setup() called");
     alarmMana.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"alarmMana setup() called");
     log(MODULE_MAIN,LOG_LEVEL_INFO,"ESP32 setup() finished");

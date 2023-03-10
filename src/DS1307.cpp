@@ -11,6 +11,7 @@ void DS1307::setup() {
     if (! rtc.begin()) {
         Serial.println("Couldn't find RTC");
         Serial.flush();
+        Status = DS1307_ERROR_CONNECT;
     }
     if (! rtc.isrunning()) {
         Status = DS1307_ERROR_RESET;
@@ -24,6 +25,10 @@ void DS1307::setup() {
 }
 void DS1307::readTime(){
     //Read the current time
+    if (Status == DS1307_ERROR_CONNECT) {
+        setup();
+        return;
+    }
    now = rtc.now();
    if(!now.isValid())
    {

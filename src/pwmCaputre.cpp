@@ -34,7 +34,7 @@ void capture_stak(void *arg)
             this_->pwmInfo.t0_h = cap.t0_h_time;
             this_->pwmInfo.T = cap.cycle_time;
             this_->pwmInfo.duty = (float)cap.t0_h_time / cap.cycle_time * 100;
-            log(MODULE_PWM,LOG_LEVEL_DEBUG,"duty:%f", this_->pwmInfo.duty);
+    Serial.printf("t0_h_time:%u,cycle_time:%u,duty:%f", cap.t0_h_time, cap.cycle_time, this_->pwmInfo.duty);
 
             capture_duty_uninstall_service();
             capture_frequency_install_service();

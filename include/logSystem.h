@@ -29,7 +29,8 @@ enum module{
     MODULE_TOUCHBUTTON,
     MODULE_UNKNOWN
 };
-void log(module module,logLevel level,const char * format,...);
+//void log(module module,logLevel level,const char * format,...);
 void log(module module,logLevel level,std::string context);
 void log(module module, logLevel level, StringSumHelper context);
+void log(module module, logLevel level, const char * context);
 #endif //ESP32_ICEC_LOGSYSTEM_H

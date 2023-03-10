@@ -51,7 +51,7 @@ void AlarmManagement::setup() {
     auto i = sysManeger.get_Status();
     i.alarmEN = false;
     sysManeger.set_Status(i.summary);
-    alarmSet = DateTime(2000,0,0,0,0,0);
+
     pinMode(LED_OUTPUT,OUTPUT);
     pinMode(BUZZER_OUTPUT,OUTPUT);
     digitalWrite(LED_OUTPUT,LOW);
@@ -73,3 +73,28 @@ void AlarmManagement::loop() {
         }
     }
 }
+
+bool alarmSet::operator==(const DateTime& dat) const {
+    if (hour == dat.hour()&&minute == dat.minute()&&second == dat.second())
+        return true;
+    else
+        return false;
+}
+
+alarmSet::alarmSet(byte hour, byte minute, byte second) {
+    this->hour = hour;
+    this->minute = minute;
+    this->second = second;
+
+}
+
+alarmSet::alarmSet() {
+    hour = 0;
+    minute = 0;
+    second = 0;
+
+}
+
+
+
+

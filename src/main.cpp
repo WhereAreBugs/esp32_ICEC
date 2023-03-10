@@ -9,7 +9,7 @@
 #include "TouchButton.h"
 #include "pwmCaputre.h"
 #include "alarm.h"
-
+#include "logSystem.h"
 volatile bool SYSisOff = true;
 
 //实例化对象
@@ -26,14 +26,22 @@ void setup() {
     Wire.begin(SDA_PIN,SCL_PIN);
     serialIo.setup();
     /*   SYS指示灯引脚初始化   */
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"ESP32 setup() started");
     pinMode(2,OUTPUT);
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"SYS LED pin setted");
     displayCore.setup();
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"displayCore setup() called");
     temperature.setup();
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"temperature setup() called");
     touches.setup();
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"touches setup() called");
     ds.setup();
-    Serial.println("ESP32 setup() ended");
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"ds setup() called");
     pwm.setup();
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"pwm setup() called");
     alarmMana.setup();
+    log(MODULE_MAIN,LOG_LEVEL_DEBUG,"alarmMana setup() called");
+    log(MODULE_MAIN,LOG_LEVEL_INFO,"ESP32 setup() finished");
 
 }
 

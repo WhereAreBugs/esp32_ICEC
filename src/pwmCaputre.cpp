@@ -19,7 +19,7 @@ void capture_stak(void *arg)
     {
         if (!this_->is_running()) {
             log(MODULE_PWM,LOG_LEVEL_DEBUG,"capture_stak is not start");
-            yield();
+            vTaskDelay(1000);
             continue;
         }
         log(MODULE_PWM,LOG_LEVEL_DEBUG,"capture_stak is start");

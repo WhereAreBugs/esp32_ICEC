@@ -10,7 +10,9 @@
 #include "logSystem.h"
 int page1=-1;
 extern TouchButton touches;
-extern pwmCaputre * this_;
+//extern pwmCaputre * this_;
+extern pwmCaputre pwm;
+extern temperature temperature;
 extern double getDistance();
 U8G2_SSD1309_128X64_NONAME0_F_SW_I2C u8g2(U8G2_R0, SCL, SDA);
 
@@ -25,15 +27,20 @@ void displayCore::setup() {
     display->setFont(u8g2_font_unifont_t_chinese3);
     display->print("System booting...");
     display->sendBuffer();
+    temp = &temperature;
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "NullDereference"
+
 void displayCore::loop() {
     TimeSet text = TouchButton::getTimeSet();
     if (display== nullptr)
     {
         log(MODULE_DISPLAYCORE,LOG_LEVEL_ERROR,"display is nullptr!");
+        return;
+    }
+    if (temp == nullptr)
+    {
+        log(MODULE_DISPLAYCORE,LOG_LEVEL_ERROR,"temp is nullptr!");
         return;
     }
     switch(sysManeger.get_Status().currentPage)
@@ -71,12 +78,12 @@ void displayCore::loop() {
             }
 
             display->setCursor(0,32);
-            display->print("频率:" + String(this_->pwmInfo.freq) + "周期:" + String(this_->pwmInfo.T));
+            display->print("频率:" + String(pwm.pwmInfo.freq) + "周期:" + String(pwm.pwmInfo.T));
             display->setCursor(0,48);
-            display->print("高电平:" + String(this_->pwmInfo.t0_h) + "占空比:" + String(this_->pwmInfo.duty));
-            display->drawHLine(0,49, static_cast<int>(64 * this_->pwmInfo.duty));
-            display->drawVLine(0, static_cast<int>(64 * this_->pwmInfo.duty), 15);
-            display->drawHLine(0,64,static_cast<int>(64*(1 - this_->pwmInfo.duty)));
+            display->print("高电平:" + String(pwm.pwmInfo.t0_h) + "占空比:" + String(pwm.pwmInfo.duty));
+            display->drawHLine(0,49, static_cast<int>(64 * pwm.pwmInfo.duty));
+            display->drawVLine(0, static_cast<int>(64 * pwm.pwmInfo.duty), 15);
+            display->drawHLine(0,64,static_cast<int>(64*(1 - pwm.pwmInfo.duty)));
             display->sendBuffer();
             break;
         }
@@ -207,4 +214,4 @@ void displayCore::loop() {
 
 
 }
-#pragma clang diagnostic pop
+

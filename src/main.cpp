@@ -29,7 +29,7 @@ void setup() {
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"ESP32 setup() started");
     pinMode(2,OUTPUT);
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"SYS LED pin setted");
-//    displayCore.setup();
+    displayCore.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"displayCore setup() called");
     temperature.setup();
     log(MODULE_MAIN,LOG_LEVEL_DEBUG,"temperature setup() called");

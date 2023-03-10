@@ -23,10 +23,10 @@ struct TS
 typedef struct TS TimeSet;
 class TouchButton {
 private:
-    OneButton * button1 = new OneButton(BUTTON1, true);
-    OneButton * button2 = new OneButton(BUTTON2, true);
-    OneButton * button3 = new OneButton(BUTTON3, true);
-    OneButton * button4 = new OneButton(BUTTON4, true);
+    OneButton * button1 = new OneButton(BUTTON1, true, false);
+    OneButton * button2 = new OneButton(BUTTON2, true, false);
+    OneButton * button3 = new OneButton(BUTTON3, true, false);
+    OneButton * button4 = new OneButton(BUTTON4, true, false);
 
 
 public:

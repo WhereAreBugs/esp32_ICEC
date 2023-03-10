@@ -14,7 +14,7 @@ void log(module module, logLevel level, const char *format, ...) {
     va_start(args, format);
     vprintf(format, args);
     va_end(args);
-    Serial.println();
+    Serial.println(" ");
 }
 
 void log(module module, logLevel level, std::string context) {
@@ -24,4 +24,10 @@ void log(module module, logLevel level, std::string context) {
     Serial.printf("[%s][%s]", module == MODULE_MAIN ? "MAIN" : module == MODULE_SERIAL_IO ? "SERIAL_IO" : module == MODULE_STATUS ? "STATUS" : module == MODULE_DISPLAYCORE ? "DISPLAYCORE" : module == MODULE_TEMPERATURE ? "TEMPERATURE" : module == MODULE_PWM ? "PWM" : module == MODULE_ALARM ? "ALARM" : module == MODULE_TIMESET ? "TIMESET" : module == MODULE_LOGSYSTEM ? "LOGSYSTEM" : module == MODULE_DS1307 ? "DS1307" : "UNKNOWN", level == LOG_LEVEL_DEBUG ? "DEBUG" : level == LOG_LEVEL_INFO ? "INFO" : level == LOG_LEVEL_WARNING ? "WARNING" : level == LOG_LEVEL_ERROR ? "ERROR" : "FATAL");
     Serial.println(context.c_str());
 }
-
+void log(module module, logLevel level, StringSumHelper context) {
+    if (level < DEBUG_LEVEL) {
+        return;
+    }
+    Serial.printf("[%s][%s]", module == MODULE_MAIN ? "MAIN" : module == MODULE_SERIAL_IO ? "SERIAL_IO" : module == MODULE_STATUS ? "STATUS" : module == MODULE_DISPLAYCORE ? "DISPLAYCORE" : module == MODULE_TEMPERATURE ? "TEMPERATURE" : module == MODULE_PWM ? "PWM" : module == MODULE_ALARM ? "ALARM" : module == MODULE_TIMESET ? "TIMESET" : module == MODULE_LOGSYSTEM ? "LOGSYSTEM" : module == MODULE_DS1307 ? "DS1307" : "UNKNOWN", level == LOG_LEVEL_DEBUG ? "DEBUG" : level == LOG_LEVEL_INFO ? "INFO" : level == LOG_LEVEL_WARNING ? "WARNING" : level == LOG_LEVEL_ERROR ? "ERROR" : "FATAL");
+    Serial.println(context.c_str());
+}

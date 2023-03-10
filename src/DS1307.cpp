@@ -27,11 +27,19 @@ void DS1307::readTime(){
    now = rtc.now();
    if(!now.isValid())
    {
-       log(MODULE_DS1307,LOG_LEVEL_WARNING,"RTC is NOT valid, let's set the time!");
+       log(MODULE_DS1307,LOG_LEVEL_WARNING,"RTC is NOT valid");
+       Status = DS1307_ERROR_RESET;
    }
+   Status = DS1307_OK;
 }
 
 DateTime DS1307::getTime() {
+    if(!now.isValid())
+    {
+        log(MODULE_DS1307,LOG_LEVEL_WARNING,"RTC is NOT valid");
+        Status = DS1307_ERROR_RESET;
+    }
+    log(MODULE_DS1307,LOG_LEVEL_DEBUG,"Time is "+String(now.year()) + "-" + String(now.month()) + "-" + String(now.day()) + " " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second()));
     return now;
 }
 

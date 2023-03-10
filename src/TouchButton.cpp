@@ -4,7 +4,7 @@
 
 #include "TouchButton.h"
 #include "alarm.h"
-
+#include "logSystem.h"
 const short daysOfMounth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 TimeSet timeSet;
 extern SYSManeger sysManeger;
@@ -23,7 +23,7 @@ void TouchButton::setup() {
     button4->attachClick(button_handle4);
     button4->attachDuringLongPress(button_handle4_long_press);
     button4->attachDoubleClick(button_handle4_double_click);
-    Serial.println("TouchButton setup complete");
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"TouchButton setup complete!");
 }
 
 bool TouchButton::getAlarmEn() {
@@ -31,6 +31,7 @@ bool TouchButton::getAlarmEn() {
 }
 
 TimeSet TouchButton::getTimeSet() {
+
     return timeSet;
 }
 
@@ -40,6 +41,7 @@ void button_handle1() {
      * Fixed: True[该按键的功能将会固定]
      * WARNING: 理论上任何情况下该按钮都会生效
      */
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button1 click");
     auto status = sysManeger.get_Status();
     if (status.summary & 0x01) {
         //闹钟开启状态
@@ -55,16 +57,11 @@ void button_handle1() {
     }
     if (status.currentPage == 2)
     {
+        log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button1 click in alarm page");
        auto alarm =  alarmMana.getAlarmSet();
        timeSet = {alarm.year(),alarm.month(),alarm.day(),alarm.hour(),alarm.minute(),alarm.second()};
     }
 
-    if (status.currentPage == 2)
-    {
-       auto alarm =  alarmMana.getAlarmSet();
-        timeSet = TS{alarm.year(),alarm.month(),alarm.day(),alarm.hour(),alarm.minute(),alarm.second()};
-
-    }
 
 }
 
@@ -74,6 +71,7 @@ void button_handle2() {
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button2 click");
     SYSStatus status = sysManeger.get_Status();
     uint8_t result = status.summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
@@ -145,6 +143,7 @@ void button_handle1_long_press()
  * WARNING: 该按键在某些页面下不会生效
  */
 {
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button1 long press");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x0a)
         //处在调整时间的界面
@@ -168,6 +167,7 @@ void button_handle2_long_press()
  * WARNING: 该按键在某些页面下不会生效
  */
 {
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button2 long press");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
         //处在调整时间的界面
@@ -237,6 +237,7 @@ void button_handle3() {
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button3 press");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
         //处在调整时间的界面
@@ -314,6 +315,7 @@ void button_handle3_long_press()
   * WARNING: 该按键在某些页面下不会生效
   */
 {
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button3 long press");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
         //处在调整时间的界面
@@ -383,6 +385,7 @@ void button_handle4() {
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button4 press");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
         //处在调整时间的界面
@@ -454,6 +457,7 @@ void button_handle4_long_press()
   * WARNING: 该按键在某些页面下不会生效
   */
 {
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button4 long press");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x04 || (result & 0x0e) == 0x0a) {
         //处在调整时间的界面
@@ -525,6 +529,7 @@ void button_handle1_double_click()
   */
 
 {
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button1 double click");
     uint8_t result = sysManeger.get_Status().summary;
     if ((result & 0x0e) == 0x04)
         //处在闹钟设置的界面
@@ -542,6 +547,7 @@ void button_handle3_double_click() {
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button3 double click");
     uint8_t result = sysManeger.get_Status().summary;
     if (((result & 0x0e) == 0x04) || ((result & 0x0e) == 0x0a)) {
         //处在调整时间的界面
@@ -562,6 +568,7 @@ void button_handle4_double_click() {
      * Fixed: False[该按键的功能将会随着页面的变化而变化]
      * WARNING: 该按键在某些页面下不会生效
      */
+    log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button4 double click");
     uint8_t result = sysManeger.get_Status().summary;
     if (((result & 0x0e) == 0x04) || ((result & 0x0e) == 0x0a)) {
         //处在调整时间的界面

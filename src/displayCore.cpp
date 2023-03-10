@@ -7,6 +7,7 @@
 #include "displayCore.h"
 #include "TouchButton.h"
 #include "pwmCaputre.h"
+#include "logSystem.h"
 int page1=-1;
 extern TouchButton touches;
 extern pwmCaputre * this_;
@@ -22,9 +23,8 @@ void displayCore::setup() {
     display->clearDisplay();
     display->setCursor(0,30);
     display->setFont(u8g2_font_unifont_t_chinese3);
-    display->print("一二三Booting");
+    display->print("System booting...");
     display->sendBuffer();
-
 }
 
 #pragma clang diagnostic push
@@ -33,12 +33,14 @@ void displayCore::loop() {
     TimeSet text = TouchButton::getTimeSet();
     if (display== nullptr)
     {
-        Serial.println("[ERROR] display is nullptr!");
+        log(MODULE_DISPLAYCORE,LOG_LEVEL_ERROR,"display is nullptr!");
+        return;
     }
     switch(sysManeger.get_Status().currentPage)
     {
         case 0:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page0");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -59,6 +61,7 @@ void displayCore::loop() {
 
         case 1:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page1");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -79,6 +82,7 @@ void displayCore::loop() {
         }
         case 2:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page2");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -107,6 +111,7 @@ void displayCore::loop() {
         }
         case 3:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page3");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -121,6 +126,7 @@ void displayCore::loop() {
         }
         case 4:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page4");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -134,6 +140,7 @@ void displayCore::loop() {
         }
         case 5:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page5");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -168,6 +175,7 @@ void displayCore::loop() {
         }
         case 6:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page6");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -178,6 +186,7 @@ void displayCore::loop() {
         }
         case 7:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page7");
             if(sysManeger.get_Status().currentPage-page1!=0)
             {
                 page1=sysManeger.get_Status().currentPage;
@@ -189,6 +198,7 @@ void displayCore::loop() {
 
         default:
         {
+            log(MODULE_DISPLAYCORE,LOG_LEVEL_DEBUG,"page error");
             display->setCursor(0,16);
             display->print("error");
         }

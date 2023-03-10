@@ -6,6 +6,7 @@
 #define ESP32_ICEC_LOGSYSTEM_H
 
 #include <string>
+#include <Arduino.h>
 
 enum logLevel{
     LOG_LEVEL_DEBUG,
@@ -25,8 +26,10 @@ enum module{
     MODULE_TIMESET,
     MODULE_LOGSYSTEM,
     MODULE_DS1307,
+    MODULE_TOUCHBUTTON,
     MODULE_UNKNOWN
 };
 void log(module module,logLevel level,const char * format,...);
 void log(module module,logLevel level,std::string context);
+void log(module module, logLevel level, StringSumHelper context);
 #endif //ESP32_ICEC_LOGSYSTEM_H

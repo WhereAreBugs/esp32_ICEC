@@ -5,7 +5,7 @@
 #include "settings.h"
 #include "test_cap.h"
 #include "pwmCaputre.h"
-
+#include "logSystem.h"
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
@@ -13,14 +13,17 @@ EventGroupHandle_t   xEventGroup_Handle = nullptr;
 pwmCaputre * this_ = nullptr;
 void capture_stak(void *arg)
 {
+    log(MODULE_PWM,LOG_LEVEL_DEBUG,"capture_stak entered");
     EventBits_t uxBits;
     while(true)
     {
         if (!this_->is_running()) {
+            log(MODULE_PWM,LOG_LEVEL_DEBUG,"capture_stak is not start");
             vTaskDelay(200);
             yield();
             continue;
         }
+        log(MODULE_PWM,LOG_LEVEL_DEBUG,"capture_stak is start");
         capture_duty_install_service();
         uxBits = xEventGroupWaitBits(xEventGroup_Handle,
                                      GET_DUTY_EVENT | GET_FREQUENCY_EVENT,
@@ -32,8 +35,8 @@ void capture_stak(void *arg)
             this_->pwmInfo.t0_h = cap.t0_h_time;
             this_->pwmInfo.T = cap.cycle_time;
             this_->pwmInfo.duty = (float)cap.t0_h_time / cap.cycle_time * 100;
-            Serial.printf("t0_h_time:%llu,cycle_time:%llu,duty:%f", this_->pwmInfo.t0_h, this_->pwmInfo.T, this_->pwmInfo.duty);
-            Serial.println(" Success");
+            log(MODULE_PWM,LOG_LEVEL_DEBUG,"duty:%f", this_->pwmInfo.duty);
+
             capture_duty_uninstall_service();
             capture_frequency_install_service();
         }

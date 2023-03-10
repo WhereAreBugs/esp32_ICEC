@@ -66,5 +66,5 @@ void loop() {
     /*   读取时间   */
     ds.readTime();
     alarmMana.loop();
-    touches.loop();
+//    touches.loop();
 }

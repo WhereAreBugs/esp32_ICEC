@@ -5,6 +5,7 @@
 #include "Temperature.h"
 #include "displayCore.h"
 #include "pwmCaputre.h"
+#include "logSystem.h"
 
 extern displayCore displayCore;
 extern temperature temperature;
@@ -46,7 +47,7 @@ void SYSManeger::loop() {
 }
 
 SYSStatus SYSManeger::get_Status() {
-
+    log(MODULE_STATUS,LOG_LEVEL_DEBUG, "status.summary");
     return status;
 }
 

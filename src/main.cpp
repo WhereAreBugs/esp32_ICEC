@@ -45,6 +45,7 @@ void setup() {
     log(MODULE_MAIN,LOG_LEVEL_INFO,"ESP32 setup() finished");
     Ticker buttonLoop;
     buttonLoop.attach_ms(50, [](){
+        log(MODULE_MAIN,LOG_LEVEL_DEBUG,"button loop called");
         touches.loop();
     });
 

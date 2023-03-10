@@ -59,7 +59,7 @@ void button_handle1() {
     {
         log(MODULE_TOUCHBUTTON,LOG_LEVEL_INFO,"button1 click in alarm page");
        auto alarm =  alarmMana.getAlarmSet();
-       timeSet = {alarm.year(),alarm.month(),alarm.day(),alarm.hour(),alarm.minute(),alarm.second()};
+       timeSet = {0,0,0,alarm.getHour(),alarm.getMinute(),alarm.getSecond()};
     }
 
 

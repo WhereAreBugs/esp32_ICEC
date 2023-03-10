@@ -90,7 +90,7 @@ void displayCore::loop() {
                 display->setCursor(0,16);
                 display->print("clock change:");
                 display->setCursor(0,32);
-                display->print(String(alarmMana.getAlarmSet().hour())+":"+String(alarmMana.getAlarmSet().minute())+":"+String(alarmMana.getAlarmSet().second()));
+                display->print(String(alarmMana.getAlarmSet().getHour())+":"+String(alarmMana.getAlarmSet().getMinute())+":"+String(alarmMana.getAlarmSet().getSecond()));
             }
             display->setCursor(0,48);
             if(sysManeger.get_Status().alarmEN) display->print("ON ");
@@ -101,9 +101,9 @@ void displayCore::loop() {
             display->sendBuffer();
             switch(sysManeger.get_Status().timeSetNow)
             {
-                case 4:display->print(String(alarmMana.getAlarmSet().hour())); break;
-                case 5:display->print(String(alarmMana.getAlarmSet().minute())); break;
-                case 6:display->print(String(alarmMana.getAlarmSet().second())); break;
+                case 4:display->print(String(alarmMana.getAlarmSet().getHour())); break;
+                case 5:display->print(String(alarmMana.getAlarmSet().getMinute())); break;
+                case 6:display->print(String(alarmMana.getAlarmSet().getSecond())); break;
                 default:display->print("error");
             }
             delay(500);
@@ -192,7 +192,7 @@ void displayCore::loop() {
                 page1=sysManeger.get_Status().currentPage;
                 display->clearDisplay();
                 display->setCursor(0,16);
-                display->print(String(alarmMana.getAlarmSet().hour())+":"+String(alarmMana.getAlarmSet().minute())+":"+String(alarmMana.getAlarmSet().second()));
+                display->print(String(alarmMana.getAlarmSet().getHour())+":"+String(alarmMana.getAlarmSet().getMinute())+":"+String(alarmMana.getAlarmSet().getSecond()));
             }
         }
 

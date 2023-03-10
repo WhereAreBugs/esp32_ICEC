@@ -31,7 +31,7 @@ private:
 
 public:
     void setup();
-    static bool getAlarmEn();
+
     static TimeSet getTimeSet();
 };
 

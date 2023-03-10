@@ -74,25 +74,32 @@ void AlarmManagement::loop() {
     }
 }
 
-bool alarmSet::operator==(const DateTime& dat) const {
+bool AlarmSet::operator==(const DateTime& dat) const {
     if (hour == dat.hour()&&minute == dat.minute()&&second == dat.second())
         return true;
     else
         return false;
 }
 
-alarmSet::alarmSet(byte hour, byte minute, byte second) {
+AlarmSet::AlarmSet(byte hour, byte minute, byte second) {
     this->hour = hour;
     this->minute = minute;
     this->second = second;
 
 }
 
-alarmSet::alarmSet() {
+AlarmSet::AlarmSet() {
     hour = 0;
     minute = 0;
     second = 0;
 
+}
+
+AlarmSet &AlarmSet::operator=(const DateTime &dat) {
+    this->hour = dat.hour();
+    this->minute = dat.minute();
+    this->second = dat.second();
+    return *this;
 }
 
 

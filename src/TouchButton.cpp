@@ -12,6 +12,10 @@ extern DS1307 ds;
 extern double alarmTemp;
 extern AlarmManagement alarmMana;
 void TouchButton::setup() {
+    pinMode(BUTTON1,INPUT_PULLUP);
+    pinMode(BUTTON2,INPUT_PULLUP);
+    pinMode(BUTTON3,INPUT_PULLUP);
+    pinMode(BUTTON4,INPUT_PULLUP);
     button1->attachClick(button_handle1);
     button1->attachLongPressStop(button_handle1_long_press);
     button1->attachDoubleClick(button_handle1_double_click);
@@ -607,6 +611,7 @@ bool is_doubleYear(int a) {
             return true;
         } else {
             return false;
+
         }
     }
 }

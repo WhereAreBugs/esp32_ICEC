@@ -2,14 +2,10 @@
 // Created by 神奇bug在哪里 on 2023/3/2.
 //
 #include "Status.h"
-#include "Temperature.h"
 #include "displayCore.h"
-#include "pwmCaputre.h"
 #include "logSystem.h"
 
 extern displayCore displayCore;
-extern temperature temperature;
-extern pwmCaputre pwm;
 double alarmTemp = 30.0;
 
 void SYSManeger::setup() {
@@ -18,22 +14,6 @@ void SYSManeger::setup() {
 }
 
 void SYSManeger::loop() {
-    temperature.loop();
-    if (temperature.getTemp()>alarmTemp)
-    {
-        status.summary |= 0x01;
-    }
-    else
-    {
-        status.summary &= 0xFE;
-    }
-    if (status.currentPage==1) {
-        if (!pwm.is_running())
-        {pwm.start();}
-    }
-    if (pwm.is_running()&&status.currentPage!=1) {
-        pwm.stop();
-    }
     if (status.timeSetNow>=8)
     {
         Serial.println("[ERROR] timeSetNow is out of range!");

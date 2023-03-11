@@ -95,15 +95,18 @@ esp32::ESP32InternalGPIOPin *esp32_esp32internalgpiopin_12;
 #define micros() esphome::micros()
 #define delay(x) esphome::delay(x)
 #define delayMicroseconds(x) esphome::delayMicroseconds(x)
+
 // ========== AUTO GENERATED INCLUDE BLOCK END ==========="
 #include "TouchButton.h"
 #include "Status.h"
 #include "displayCore.h"
 #include "alarm.h"
+#include "serial_IO.h"
+serial_IO * serialIo;
 displayCore * display;
 SYSManeger * sys;
 double tempratureValue;
-
+bool SYSLight;
 void setup() {
     // ========== AUTO GENERATED CODE BEGIN ===========
   // esphome:
@@ -884,12 +887,23 @@ void setup() {
   automation->add_actions({ds1307_readaction});
   // =========== AUTO GENERATED CODE END ============
     display = new displayCore();
-    App.register_component(display);
     sys = new SYSManeger();
+    serialIo = new serial_IO();
+    App.register_component(display);
     App.register_component(sys);
+    App.register_component(serialIo);
+    pinMode(2,OUTPUT);
     App.setup();
+
+
+
 }
 
 void loop() {
     App.loop();
+    if (SYSLight)
+        digitalWrite(2,LOW);
+    else
+        digitalWrite(2,HIGH);
+    SYSLight = !SYSLight;
 }

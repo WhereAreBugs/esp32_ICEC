@@ -4,15 +4,15 @@
 
 #ifndef ESP32_ICEC_SERIAL_IO_H
 #define ESP32_ICEC_SERIAL_IO_H
+#include "esphome.h"
 
-
-class serial_IO {
+class serial_IO : public esphome::Component{
 private:
     char * buffer = nullptr;
     byte bufferIndex = 0;
     void readCommand();
 public:
-    void setup();
+    void setup() override;
     void loop();
 
 };

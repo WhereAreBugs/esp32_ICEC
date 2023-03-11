@@ -12,7 +12,7 @@ void setAlarm(DateTime time) {
     alarmSet = time;
 }
 void alarmEvent(){
-    log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm event triggered");
+
     auto result = sys->get_Status();
     if (result.currentPage == 7) {
         log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm event triggered in alarm page");

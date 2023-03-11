@@ -8,7 +8,6 @@
 #include "OneButton.h"
 #include "settings.h"
 #include "Status.h"
-#include "DS1307_time.h"
 struct TS
 {
     TS(uint16_t i, uint8_t i1, uint8_t i2, uint8_t i3, uint8_t i4, uint8_t i5);
@@ -21,35 +20,15 @@ struct TS
     byte second = 0;
 };
 typedef struct TS TimeSet;
-class TouchButton {
-private:
-    OneButton * button1 = new OneButton(BUTTON1, true, false);
-    OneButton * button2 = new OneButton(BUTTON2, true, false);
-    OneButton * button3 = new OneButton(BUTTON3, true, false);
-    OneButton * button4 = new OneButton(BUTTON4, true, false);
-
-
-public:
-    void setup();
-    void loop();
-    static TimeSet getTimeSet();
-};
-
-
-
-
 
 void button_handle1();
 void button_handle2();
 void button_handle3();
 void button_handle4();
-void button_handle1_long_press();
-void button_handle2_long_press();
-void button_handle3_long_press();
-void button_handle4_long_press();
+void button_handle2_double_click();
 void button_handle1_double_click();
 void button_handle3_double_click();
 void button_handle4_double_click();
-
+TS getTimeSet();
 bool is_doubleYear(int a);
 #endif //ESP32_ICEC_TOUCHBUTTON_H

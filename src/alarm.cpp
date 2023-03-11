@@ -1,19 +1,19 @@
 #include "alarm.h"
-#include "DS1307_time.h"
-#include "Status.h"
-#include "settings.h"
-#include <Ticker.h>
-#include "logSystem.h"
+#include "../include/Status.h"
+#include "../include/settings.h"
+#include "../include/logSystem.h"
+#include "RTClib.h"
+bool tiggered = false;
 byte alarmCount = 0;
-byte ledCount = 0;
-extern DS1307 ds;
-extern SYSManeger sysManeger;
-void AlarmManagement::setAlarm(DateTime time) {
-    this->alarmSet = time;
+AlarmSet alarmSet;
+extern SYSManeger *  sys;
+extern esphome::ds1307::DS1307Component *ds1307_time;
+void setAlarm(DateTime time) {
+    alarmSet = time;
 }
 void alarmEvent(){
     log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm event triggered");
-    auto result = sysManeger.get_Status();
+    auto result = sys->get_Status();
     if (result.currentPage == 7) {
         log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm event triggered in alarm page");
         if (alarmCount < 3)
@@ -24,54 +24,34 @@ void alarmEvent(){
         {
             digitalWrite(BUZZER_OUTPUT,LOW);
             result.currentPage = 0;
-            sysManeger.set_Status(result.summary);
+            sys->set_Status(result.summary);
             alarmCount = 0;
         }
     }
-    else if (result.temperatureWarning == 1)
-    {
-        log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm event triggered in temperature warning");
-        if (ledCount / 2 == 0 && ledCount < 6)
-        {
-            digitalWrite(LED_OUTPUT,HIGH);
-        }
-        else
-        {
-            digitalWrite(LED_OUTPUT,LOW);
-            if (ledCount == 6)
-            {
-                ledCount = 0;
-                result.temperatureWarning = 0;
-                sysManeger.set_Status(result.summary);
-            }
-        }
+}
+
+AlarmSet getAlarmSet() {
+    return alarmSet;
+}
+
+
+void alarm() {
+    if (tiggered) {
+        return;
     }
-}
-void AlarmManagement::setup() {
-    auto i = sysManeger.get_Status();
-    i.alarmEN = false;
-    sysManeger.set_Status(i.summary);
-
-    pinMode(LED_OUTPUT,OUTPUT);
-    pinMode(BUZZER_OUTPUT,OUTPUT);
-    digitalWrite(LED_OUTPUT,LOW);
-    digitalWrite(BUZZER_OUTPUT,LOW);
-    log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm pin setup finished");
-    Ticker ticker;  //创建一个定时器对象
-    ticker.attach(1, alarmEvent);  //每隔1秒执行一次alarmEvent函数
-
-}
-
-void AlarmManagement::loop() {
-    if (sysManeger.get_Status().alarmEN) {
-        //TODO: change the time judge method
-        if (alarmSet == ds.getTime()) {
+    if (sys->get_Status().alarmEN) {
+        if (alarmSet == ds1307_time->now()) {
             log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm triggered");
-            auto result = sysManeger.get_Status();
+            auto result = sys->get_Status();
             result.alarmEN = 1;
-            sysManeger.set_Status(result.summary);
+            sys->set_Status(result.summary);
         }
     }
+}
+
+void setAlarm(byte hour, byte minute, byte second) {
+    alarmSet = DateTime(2000, 1, 1, hour, minute, second);
+
 }
 
 bool AlarmSet::operator==(const DateTime& dat) const {
@@ -100,6 +80,20 @@ AlarmSet &AlarmSet::operator=(const DateTime &dat) {
     this->minute = dat.minute();
     this->second = dat.second();
     return *this;
+}
+
+AlarmSet &AlarmSet::operator=(const esphome::time::ESPTime &dat) {
+    this->hour = dat.hour;
+    this->minute = dat.minute;
+    this->second = dat.second;
+    return *this;
+}
+
+bool AlarmSet::operator==(const esphome::time::ESPTime &dat) const {
+    if (hour == dat.hour&&minute == dat.minute&&second == dat.second)
+        return true;
+    else
+        return false;
 }
 
 

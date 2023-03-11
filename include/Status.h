@@ -3,7 +3,9 @@
 //
 #ifndef ESP32_ICEC_STATUS_H
 #define ESP32_ICEC_STATUS_H
+
 #include <Arduino.h>
+#include "esphome.h"
 union SYSStatus{
     byte alarmEN : 1;
     /* 0:关闭
@@ -34,7 +36,7 @@ union SYSStatus{
      * */
     uint8_t summary = 0;
 };
-class SYSManeger{
+class SYSManeger : esphome::Component{
     /*
      * 用于管理系统部分IO的启用和关闭
      * 1. distance
@@ -43,8 +45,8 @@ class SYSManeger{
 private:
     SYSStatus status;
 public:
-    void setup();
-    void loop();
+    void setup() override;
+    void loop() override;
     SYSStatus get_Status();
     void set_Status(uint8_t _status);
     void timeSetNow(uint8_t timeSetNow);

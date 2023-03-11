@@ -3,8 +3,8 @@
 //
 #include "Arduino.h"
 #include "serial_IO.h"
-#include "DS1307_time.h"
-extern DS1307 ds;
+#include "esphome.h"
+extern esphome::ds1307::DS1307Component *ds1307_time;
 void serial_IO::setup() {
     /*  创建一个大小为128个字节的缓冲区  */
     buffer = new char[128];
@@ -52,8 +52,7 @@ void serial_IO::readCommand() {
     sscanf(buffer,"ICEC%hu年%hu月%hu日%hu时%hu分%hu秒",&year,&month,&day,&hour,&minute,&second);
     if (year>2000&&year<2100&&month>0&&month<13&&day>0&&day<32&&hour<24&&minute<60&&second<60)
     {
-        DateTime time = DateTime(year,month,day,hour,minute,second);
-        ds.setTime(time);
+        ds1307_time->write_time(year,month,day,hour,minute,second);
         Serial.println("Time set!");
     }
     else

@@ -3,11 +3,13 @@
 #include "../include/settings.h"
 #include "../include/logSystem.h"
 #include "RTClib.h"
+using namespace esphome;
 bool tiggered = false;
 byte alarmCount = 0;
 AlarmSet alarmSet;
 extern SYSManeger *  sys;
 extern esphome::ds1307::DS1307Component *ds1307_time;
+extern output::OutputSwitch *buz;
 void setAlarm(DateTime time) {
     alarmSet = time;
 }
@@ -18,11 +20,11 @@ void alarmEvent(){
         log(MODULE_ALARM,LOG_LEVEL_DEBUG,"alarm event triggered in alarm page");
         if (alarmCount < 3)
         {
-            digitalWrite(BUZZER_OUTPUT,HIGH);
+            buz->turn_on();
         }
         else
         {
-            digitalWrite(BUZZER_OUTPUT,LOW);
+            buz->turn_off();
             result.currentPage = 0;
             sys->set_Status(result.summary);
             alarmCount = 0;

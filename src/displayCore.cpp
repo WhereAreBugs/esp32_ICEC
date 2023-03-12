@@ -76,8 +76,8 @@ void displayCore::loop() {
 
             display->setCursor(0,32);
 //            display->print("频率:" + String(pwm.pwmInfo.freq) + "周期:" + String(pwm.pwmInfo.T));
-//            display->setCursor(0,48);
-//            display->print("高电平:" + String(pwm.pwmInfo.t0_h) + "占空比:" + String(pwm.pwmInfo.duty));
+            display->setCursor(0,48);
+            display->print("高电平:" + String(width->get_state()) + "占空比:" + String(duty->get_state()));
 //            display->drawHLine(0,49, static_cast<int>(64 * pwm.pwmInfo.duty));
 //            display->drawVLine(0, static_cast<int>(64 * pwm.pwmInfo.duty), 15);
 //            display->drawHLine(0,64,static_cast<int>(64*(1 - pwm.pwmInfo.duty)));

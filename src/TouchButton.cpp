@@ -121,7 +121,7 @@ void button_handle2() {
 
 void button_handle2_double_click()
 /*
- * Fn: "长按保存时间"
+ * Fn: "双击保存时间"
  * Fixed: False[该按键的功能将会随着页面的变化而变化]
  * WARNING: 该按键在某些页面下不会生效
  */

@@ -241,8 +241,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin
+  //     inverted: false
   //   id: gpio_led
   gpio_led = new gpio::GPIOBinaryOutput();
   gpio_led->set_component_source("gpio.output");
@@ -264,8 +264,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_2
+  //     inverted: false
   //   id: gpio_buz
   gpio_buz = new gpio::GPIOBinaryOutput();
   gpio_buz->set_component_source("gpio.output");
@@ -313,7 +313,7 @@ void setup() {
   // binary_sensor.gpio:
   //   platform: gpio
   //   pin:
-  //     number: 18
+  //     number: 19
   //     mode:
   //       input: true
   //       output: false
@@ -321,8 +321,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_3
+  //     inverted: false
   //   id: button1
   //   on_click:
   //   - then:
@@ -367,7 +367,7 @@ void setup() {
   button1->set_component_source("gpio.binary_sensor");
   App.register_component(button1);
   esp32_esp32internalgpiopin_3 = new esp32::ESP32InternalGPIOPin();
-  esp32_esp32internalgpiopin_3->set_pin(::GPIO_NUM_18);
+  esp32_esp32internalgpiopin_3->set_pin(::GPIO_NUM_19);
   esp32_esp32internalgpiopin_3->set_inverted(false);
   esp32_esp32internalgpiopin_3->set_drive_strength(::GPIO_DRIVE_CAP_2);
   esp32_esp32internalgpiopin_3->set_flags(gpio::Flags::FLAG_INPUT);
@@ -375,7 +375,7 @@ void setup() {
   // binary_sensor.gpio:
   //   platform: gpio
   //   pin:
-  //     number: 19
+  //     number: 18
   //     mode:
   //       input: true
   //       output: false
@@ -383,8 +383,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_4
+  //     inverted: false
   //   id: button2
   //   on_press:
   //   - then:
@@ -427,7 +427,7 @@ void setup() {
   button2->set_component_source("gpio.binary_sensor");
   App.register_component(button2);
   esp32_esp32internalgpiopin_4 = new esp32::ESP32InternalGPIOPin();
-  esp32_esp32internalgpiopin_4->set_pin(::GPIO_NUM_19);
+  esp32_esp32internalgpiopin_4->set_pin(::GPIO_NUM_18);
   esp32_esp32internalgpiopin_4->set_inverted(false);
   esp32_esp32internalgpiopin_4->set_drive_strength(::GPIO_DRIVE_CAP_2);
   esp32_esp32internalgpiopin_4->set_flags(gpio::Flags::FLAG_INPUT);
@@ -443,8 +443,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_5
+  //     inverted: false
   //   id: button3
   //   on_press:
   //   - then:
@@ -503,8 +503,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_6
+  //     inverted: false
   //   id: button4
   //   on_press:
   //   - then:
@@ -563,8 +563,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_7
+  //     inverted: false
   //   temperature:
   //     id: temprature
   //     on_raw_value:
@@ -712,8 +712,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_8
+  //     inverted: false
   //   id: duty
   //   disabled_by_default: false
   //   force_update: false
@@ -754,8 +754,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_9
+  //     inverted: false
   //   id: pulse_count
   //   disabled_by_default: false
   //   force_update: false
@@ -804,8 +804,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_10
+  //     inverted: false
   //   id: width
   //   disabled_by_default: false
   //   force_update: false
@@ -846,8 +846,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_11
+  //     inverted: false
   //   echo_pin:
   //     number: 25
   //     mode:
@@ -857,8 +857,8 @@ void setup() {
   //       pullup: false
   //       pulldown: false
   //     drive_strength: 20.0
-  //     inverted: false
   //     id: esp32_esp32internalgpiopin_12
+  //     inverted: false
   //   id: Distance
   //   update_interval: 1s
   //   disabled_by_default: false
@@ -896,7 +896,7 @@ void setup() {
   esp32_esp32internalgpiopin_12->set_drive_strength(::GPIO_DRIVE_CAP_2);
   esp32_esp32internalgpiopin_12->set_flags(gpio::Flags::FLAG_INPUT);
   Distance->set_echo_pin(esp32_esp32internalgpiopin_12);
-  Distance->set_timeout_us(11660.0f);
+  Distance->set_timeout_us(11661.807580174927f);
   Distance->set_pulse_time_us(10);
   ds1307_readaction->set_parent(ds1307_time);
   automation->add_actions({ds1307_readaction});

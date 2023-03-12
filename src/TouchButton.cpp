@@ -131,7 +131,7 @@ void button_handle2_double_click()
     if ((result & 0x0e) == 0x0a)
         //处在调整时间的界面
     {
-        ds1307_time->write_time(timeSet.year, timeSet.month, timeSet.day,
+        ds1307_time->write_time(static_cast<short>(timeSet.year), timeSet.month, timeSet.day,
                                 timeSet.hour, timeSet.minute, timeSet.second);
         result = result & 0x11;
          sys->set_Status(result);

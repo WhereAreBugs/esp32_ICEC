@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "bugprone-reserved-identifier"
 // Auto generated code by esphome
 // ========== AUTO GENERATED INCLUDE BLOCK BEGIN ===========
 #include "esphome.h"
@@ -894,7 +896,7 @@ void setup() {
   esp32_esp32internalgpiopin_12->set_drive_strength(::GPIO_DRIVE_CAP_2);
   esp32_esp32internalgpiopin_12->set_flags(gpio::Flags::FLAG_INPUT);
   Distance->set_echo_pin(esp32_esp32internalgpiopin_12);
-  Distance->set_timeout_us(11661.807580174927f);
+  Distance->set_timeout_us(11660.0f);
   Distance->set_pulse_time_us(10);
   ds1307_readaction->set_parent(ds1307_time);
   automation->add_actions({ds1307_readaction});
@@ -921,3 +923,5 @@ void loop() {
     SYSLight = !SYSLight;
 
 }
+
+#pragma clang diagnostic pop

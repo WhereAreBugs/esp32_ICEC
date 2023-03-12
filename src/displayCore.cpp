@@ -79,6 +79,7 @@ void displayCore::loop() {
             display->setCursor(0,48);
             display->print("高电平:" + String(width->get_state()) + "占空比:" + String(duty->get_state()));
             //还剩一个参数：pulse_count
+            // 单位: pulses/min
             //调用方法: pulse_count->get_state()
 //            display->drawHLine(0,49, static_cast<int>(64 * pwm.pwmInfo.duty));
 //            display->drawVLine(0, static_cast<int>(64 * pwm.pwmInfo.duty), 15);

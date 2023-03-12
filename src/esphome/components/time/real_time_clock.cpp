@@ -217,8 +217,6 @@ bool ESPTime::operator<=(ESPTime other) { return this->timestamp <= other.timest
 bool ESPTime::operator==(ESPTime other) { return this->timestamp == other.timestamp; }
 bool ESPTime::operator>=(ESPTime other) { return this->timestamp >= other.timestamp; }
 bool ESPTime::operator>(ESPTime other) { return this->timestamp > other.timestamp; }
-// 自定义部分,当心被覆盖!
-
 
 }  // namespace time
 }  // namespace esphome

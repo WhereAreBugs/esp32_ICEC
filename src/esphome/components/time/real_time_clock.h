@@ -12,11 +12,7 @@ namespace time {
 
 /// A more user-friendly version of struct tm from time.h
 struct ESPTime {
-//    ESPTime(unsigned short i, unsigned short i1, unsigned short i2, unsigned short i3, unsigned short i4,
-//            unsigned short i5);
-    ESPTime() = default;
-
-/** seconds after the minute [0-60]
+  /** seconds after the minute [0-60]
    * @note second is generally 0-59; the extra range is to accommodate leap seconds.
    */
   uint8_t second;

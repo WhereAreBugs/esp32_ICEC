@@ -8,6 +8,7 @@ using std::max;
 using namespace time;
 using namespace switch_;
 using namespace binary_sensor;
+logger::Logger *logger_logger;
 using namespace sensor;
 StartupTrigger *startuptrigger;
 Automation<> *automation;
@@ -95,7 +96,6 @@ esp32::ESP32InternalGPIOPin *esp32_esp32internalgpiopin_12;
 #define micros() esphome::micros()
 #define delay(x) esphome::delay(x)
 #define delayMicroseconds(x) esphome::delayMicroseconds(x)
-
 // ========== AUTO GENERATED INCLUDE BLOCK END ==========="
 #include "TouchButton.h"
 #include "Status.h"
@@ -129,6 +129,19 @@ void setup() {
   // time:
   // switch:
   // binary_sensor:
+  // logger:
+  //   level: DEBUG
+  //   hardware_uart: UART2
+  //   id: logger_logger
+  //   baud_rate: 115200
+  //   tx_buffer_size: 512
+  //   deassert_rts_dtr: false
+  //   logs: {}
+  logger_logger = new logger::Logger(115200, 512);
+  logger_logger->set_uart_selection(logger::UART_SELECTION_UART2);
+  logger_logger->pre_setup();
+  logger_logger->set_component_source("logger");
+  App.register_component(logger_logger);
   // sensor:
   startuptrigger = new StartupTrigger(600.0f);
   startuptrigger->set_component_source("esphome.coroutine");
@@ -199,7 +212,7 @@ void setup() {
   App.register_component(interval_intervaltrigger);
   automation_2 = new Automation<>(interval_intervaltrigger);
   lambdaaction = new LambdaAction<>([=]() -> void {
-      #line 27 "./test.yaml"
+      #line 30 "./test.yaml"
       alarmEvent();
   });
   automation_2->add_actions({lambdaaction});
@@ -209,7 +222,7 @@ void setup() {
   App.register_component(interval_intervaltrigger_2);
   automation_3 = new Automation<>(interval_intervaltrigger_2);
   lambdaaction_2 = new LambdaAction<>([=]() -> void {
-      #line 31 "./test.yaml"
+      #line 34 "./test.yaml"
       alarm();
   });
   automation_3->add_actions({lambdaaction_2});
@@ -225,9 +238,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin
   //   id: gpio_led
   gpio_led = new gpio::GPIOBinaryOutput();
   gpio_led->set_component_source("gpio.output");
@@ -248,9 +261,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_2
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_2
   //   id: gpio_buz
   gpio_buz = new gpio::GPIOBinaryOutput();
   gpio_buz->set_component_source("gpio.output");
@@ -305,9 +318,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_3
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_3
   //   id: button1
   //   on_click:
   //   - then:
@@ -338,14 +351,14 @@ void setup() {
   binary_sensor_clicktrigger = new binary_sensor::ClickTrigger(button1, 50, 350);
   automation_4 = new Automation<>(binary_sensor_clicktrigger);
   lambdaaction_3 = new LambdaAction<>([=]() -> void {
-      #line 55 "./test.yaml"
+      #line 58 "./test.yaml"
       button_handle1();
   });
   automation_4->add_actions({lambdaaction_3});
   binary_sensor_doubleclicktrigger = new binary_sensor::DoubleClickTrigger(button1, 50, 350);
   automation_5 = new Automation<>(binary_sensor_doubleclicktrigger);
   lambdaaction_4 = new LambdaAction<>([=]() -> void {
-      #line 59 "./test.yaml"
+      #line 62 "./test.yaml"
       button_handle1_double_click();
   });
   automation_5->add_actions({lambdaaction_4});
@@ -367,9 +380,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_4
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_4
   //   id: button2
   //   on_press:
   //   - then:
@@ -398,14 +411,14 @@ void setup() {
   binary_sensor_presstrigger = new binary_sensor::PressTrigger(button2);
   automation_6 = new Automation<>(binary_sensor_presstrigger);
   lambdaaction_5 = new LambdaAction<>([=]() -> void {
-      #line 67 "./test.yaml"
+      #line 70 "./test.yaml"
       button_handle2();
   });
   automation_6->add_actions({lambdaaction_5});
   binary_sensor_doubleclicktrigger_2 = new binary_sensor::DoubleClickTrigger(button2, 50, 350);
   automation_7 = new Automation<>(binary_sensor_doubleclicktrigger_2);
   lambdaaction_6 = new LambdaAction<>([=]() -> void {
-      #line 71 "./test.yaml"
+      #line 74 "./test.yaml"
       button_handle2_double_click();
   });
   automation_7->add_actions({lambdaaction_6});
@@ -427,9 +440,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_5
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_5
   //   id: button3
   //   on_press:
   //   - then:
@@ -458,14 +471,14 @@ void setup() {
   binary_sensor_presstrigger_2 = new binary_sensor::PressTrigger(button3);
   automation_8 = new Automation<>(binary_sensor_presstrigger_2);
   lambdaaction_7 = new LambdaAction<>([=]() -> void {
-      #line 78 "./test.yaml"
+      #line 81 "./test.yaml"
       button_handle3();
   });
   automation_8->add_actions({lambdaaction_7});
   binary_sensor_doubleclicktrigger_3 = new binary_sensor::DoubleClickTrigger(button3, 50, 350);
   automation_9 = new Automation<>(binary_sensor_doubleclicktrigger_3);
   lambdaaction_8 = new LambdaAction<>([=]() -> void {
-      #line 82 "./test.yaml"
+      #line 85 "./test.yaml"
       button_handle3_double_click();
   });
   automation_9->add_actions({lambdaaction_8});
@@ -487,9 +500,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_6
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_6
   //   id: button4
   //   on_press:
   //   - then:
@@ -518,14 +531,14 @@ void setup() {
   binary_sensor_presstrigger_3 = new binary_sensor::PressTrigger(button4);
   automation_10 = new Automation<>(binary_sensor_presstrigger_3);
   lambdaaction_9 = new LambdaAction<>([=]() -> void {
-      #line 89 "./test.yaml"
+      #line 92 "./test.yaml"
       button_handle4();
   });
   automation_10->add_actions({lambdaaction_9});
   binary_sensor_doubleclicktrigger_4 = new binary_sensor::DoubleClickTrigger(button4, 50, 350);
   automation_11 = new Automation<>(binary_sensor_doubleclicktrigger_4);
   lambdaaction_10 = new LambdaAction<>([=]() -> void {
-      #line 93 "./test.yaml"
+      #line 96 "./test.yaml"
       button_handle4_double_click();
   });
   automation_11->add_actions({lambdaaction_10});
@@ -547,9 +560,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_7
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_7
   //   temperature:
   //     id: temprature
   //     on_raw_value:
@@ -637,7 +650,7 @@ void setup() {
   sensor_sensorrawstatetrigger = new sensor::SensorRawStateTrigger(temprature);
   automation_12 = new Automation<float>(sensor_sensorrawstatetrigger);
   lambdacondition = new LambdaCondition<float>([=](float x) -> bool {
-      #line 103 "./test.yaml"
+      #line 106 "./test.yaml"
       return temprature->state >= tempratureValue;
   });
   ifaction = new IfAction<float>(lambdacondition);
@@ -696,9 +709,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_8
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_8
   //   id: duty
   //   disabled_by_default: false
   //   force_update: false
@@ -738,9 +751,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_9
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_9
   //   id: pulse_count
   //   disabled_by_default: false
   //   force_update: false
@@ -788,9 +801,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_10
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_10
   //   id: width
   //   disabled_by_default: false
   //   force_update: false
@@ -830,9 +843,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_11
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_11
   //   echo_pin:
   //     number: 25
   //     mode:
@@ -841,9 +854,9 @@ void setup() {
   //       open_drain: false
   //       pullup: false
   //       pulldown: false
-  //     id: esp32_esp32internalgpiopin_12
   //     drive_strength: 20.0
   //     inverted: false
+  //     id: esp32_esp32internalgpiopin_12
   //   id: Distance
   //   update_interval: 1s
   //   disabled_by_default: false
@@ -906,4 +919,5 @@ void loop() {
     else
         digitalWrite(2,HIGH);
     SYSLight = !SYSLight;
+
 }

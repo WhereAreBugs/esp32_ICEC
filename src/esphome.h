@@ -15,6 +15,7 @@
 #include "esphome/components/i2c/i2c_bus_arduino.h"
 #include "esphome/components/i2c/i2c_bus_esp_idf.h"
 #include "esphome/components/interval/interval.h"
+#include "esphome/components/logger/logger.h"
 #include "esphome/components/output/automation.h"
 #include "esphome/components/output/binary_output.h"
 #include "esphome/components/output/float_output.h"

@@ -16,6 +16,7 @@ void serial_IO::setup() {
 void serial_IO::loop() {
     while (Serial.available())
     {
+
         char * c = new char;
         Serial.readBytes(c, 1);
         if (*c == '\r'||*c == '\n')
